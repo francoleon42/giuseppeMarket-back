@@ -1,0 +1,63 @@
+name: Build and Deploy Docker Image
+
+on:
+  push:
+    branches:
+      - main #Trigger workflor on push to main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: checout the repository 
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+    # Step 2: Set up AWS credentials
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        run: |
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+
+      - name: Build and tag Docker image
+        run: |
+          docker build --build-arg JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} -t 692859936218.dkr.ecr.us-east-1.amazonaws.com/gifa:back_latest .
+   
+      - name: Push Docker image to ECR
+        run: |
+          docker push 692859936218.dkr.ecr.us-east-1.amazonaws.com/gifa:back_latest
+
+      # Step 5: SSH into EC2 and Redeploy Container
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+            docker pull 692859936218.dkr.ecr.us-east-1.amazonaws.com/gifa
+            docker stop JavaBackend || true
+            docker rm JavaBackend || true
+            docker system prune -a --volumes -f
+            docker run -e JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} \
+             -e DB_NAME=${{ secrets.DB_NAME }} \
+             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+             -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+             -e HOST_MYSQL=${{ secrets.HOST_MYSQL }} \
+             -e METABASE_SECRET_KEY=${{ secrets.METABASE_SECRET_KEY }} \
+             -e TRACCAR_BASE_URL=${{ secrets.TRACCAR_BASE_URL }} \
+             -e TRACCAR_PASSWORD=${{ secrets.TRACCAR_PASSWORD }} \
+             -e TRACCAR_USERNAME=${{ secrets.TRACCAR_USERNAME }} \
+             -e SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE  }} \
+             -d --name JavaBackend \
+             -p 8080:8080 \
+             --memory=1g 692859936218.dkr.ecr.us-east-1.amazonaws.com/gifa:back_latest
+            
+           

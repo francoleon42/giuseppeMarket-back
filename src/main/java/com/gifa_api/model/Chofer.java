@@ -21,5 +21,5 @@ public class Chofer {
 
     @Column(name = "nombre", nullable = false, length = 10)
     private String nombre;
-    
+
 }

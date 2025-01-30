@@ -27,15 +27,12 @@ class AuthControllerTest {
     @Mock
     private IAuthService authService;
 
-
-
     @Test
     void testLogin() {
 
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
 
         LoginResponseDTO loginResponse = LoginResponseDTO.builder()
-                .roleEntity(null)
                 .role(Rol.ADMINISTRADOR)
                 .username("admin")
                 .token("abc")
@@ -54,7 +51,6 @@ class AuthControllerTest {
     @Test
     void testRegister() {
         RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
-        // Configura registerRequestDTO según sea necesario
 
         ResponseEntity<?> response = authController.register(registerRequestDTO);
 
@@ -64,8 +60,7 @@ class AuthControllerTest {
 
     @Test
     void testLogout() {
-        String token = "someToken"; // Token de ejemplo
-
+        String token = "someToken";
         ResponseEntity<?> response = authController.logout(token);
 
         verify(authService, times(1)).logout(token);

@@ -2,9 +2,7 @@ package com.giuseppemarket.utils.enums;
 
 public enum Rol {
     ADMINISTRADOR,
-    SUPERVISOR,
-    GERENTE,
-    OPERADOR,
+    VENDEDOR,
     CHOFER;
 
     public static Rol getRol(String rol) {

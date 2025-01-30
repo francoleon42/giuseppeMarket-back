@@ -4,8 +4,6 @@ import com.giuseppemarket.config.jwt.JwtService;
 import com.giuseppemarket.dto.login.*;
 import com.giuseppemarket.exception.LoginException;
 import com.giuseppemarket.exception.NotFoundException;
-import com.giuseppemarket.model.Chofer;
-import com.giuseppemarket.repository.IChoferRepository;
 import com.giuseppemarket.repository.IUsuarioRepository;
 import com.giuseppemarket.utils.enums.EstadoUsuario;
 import com.giuseppemarket.utils.enums.Rol;
@@ -28,7 +26,7 @@ public class AuthServiceImpl implements IAuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final IChoferRepository choferRepository;
+
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO userDto) {
@@ -49,29 +47,11 @@ public class AuthServiceImpl implements IAuthService {
                 .username(userDto.getUsername())
                 .token(token)
                 .role(user.getRol())
-                .roleEntity(generateRoleEntity(user))
                 .build();
     }
 
-    private RolEntityDTO generateRoleEntity(Usuario user) {
-        switch (user.getRol()) {
-            case CHOFER -> {
-                return generateChoferResponseDTO(user);
-            }
-            default -> {
-                return null;
-            }
-        }
-    }
 
-    private RolEntityDTO generateChoferResponseDTO(Usuario user) {
-        Chofer chofer = choferRepository.findByUsuario_Id(user.getId())
-                .orElseThrow(() -> new NotFoundException("No se encontró el chofer del id asignado al usuario id: " + user.getId()));
-        return ChoferLoginResponseDTO.builder()
-                .id(chofer.getId())
-                .nombre(chofer.getNombre())
-                .build();
-    }
+
 
     @Override
     public LoginResponseDTO register(RegisterRequestDTO userToRegisterDto) {

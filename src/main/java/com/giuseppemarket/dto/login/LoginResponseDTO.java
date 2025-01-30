@@ -10,6 +10,5 @@ public class LoginResponseDTO {
     private String username;
     private String token;
     private Rol role;
-    private RolEntityDTO roleEntity;
 }
 

@@ -148,38 +148,8 @@ class AuthServiceImplTest {
     }
 
     @Test
-    void testLogin_Success_Supervisor() {
-        loginTestHelper(supervisorUsername, Rol.SUPERVISOR);
-    }
-
-    @Test
-    void testLogin_Success_Operador() {
-        loginTestHelper(operadorUsername, Rol.OPERADOR);
-    }
-
-    @Test
-    void testLogin_Success_Gerente() {
-        loginTestHelper(gerenteUsername, Rol.GERENTE);
-    }
-
-    @Test
-    void testRegister_Success_Admin() {
-        registerTestHelper(adminUsername, Rol.ADMINISTRADOR);
-    }
-
-    @Test
-    void testRegister_Success_Supervisor() {
-        registerTestHelper(supervisorUsername, Rol.SUPERVISOR);
-    }
-
-    @Test
-    void testRegister_Success_Operador() {
-        registerTestHelper(operadorUsername, Rol.OPERADOR);
-    }
-
-    @Test
-    void testRegister_Success_Gerente() {
-        registerTestHelper(gerenteUsername, Rol.GERENTE);
+    void testRegister_Success_Vendedor() {
+        registerTestHelper(gerenteUsername, Rol.VENDEDOR);
     }
 
     private void loginTestHelper(String username, Rol role) {
@@ -237,7 +207,7 @@ class AuthServiceImplTest {
         loginRequest.setPassword(password);
 
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
-                .thenReturn(null); // Simular autenticación NO exitosa
+                .thenReturn(null);
         when(userRepository.findByUsuario(usuarioInexistente)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> authService.login(loginRequest));

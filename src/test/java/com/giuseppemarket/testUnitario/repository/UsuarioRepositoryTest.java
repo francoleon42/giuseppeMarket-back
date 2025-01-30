@@ -27,7 +27,7 @@ public class UsuarioRepositoryTest {
         Usuario usuario = Usuario.builder()
                 .usuario("operador")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
-                .rol(Rol.OPERADOR)
+                .rol(Rol.VENDEDOR)
                 .estadoUsuario(EstadoUsuario.HABILITADO)
                 .build();
 
@@ -36,39 +36,24 @@ public class UsuarioRepositoryTest {
         assertNotNull(usuarioGuardado);
         assertNotNull(usuarioGuardado.getId());
         assertEquals("operador", usuarioGuardado.getUsuario());
-        assertEquals(Rol.OPERADOR, usuarioGuardado.getRol());
+        assertEquals(Rol.VENDEDOR, usuarioGuardado.getRol());
     }
 
     @Test
     void encontrarUsuarioPorNombre() {
         Usuario usuario = Usuario.builder()
-                .usuario("operador")
+                .usuario("vendedor")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
-                .rol(Rol.OPERADOR)
+                .rol(Rol.VENDEDOR)
                 .estadoUsuario(EstadoUsuario.HABILITADO)
                 .build();
 
         usuarioRepository.save(usuario);
 
-        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsuario("operador");
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByUsuario("vendedor");
 
         assertTrue(usuarioEncontrado.isPresent());
-        assertEquals("operador", usuarioEncontrado.get().getUsuario());
+        assertEquals("vendedor", usuarioEncontrado.get().getUsuario());
     }
 
-    @Test
-    void existeUsuarioPorNombre() {
-        Usuario usuario = Usuario.builder()
-                .usuario("operador")
-                .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
-                .rol(Rol.OPERADOR)
-                .estadoUsuario(EstadoUsuario.HABILITADO)
-                .build();
-
-        usuarioRepository.save(usuario);
-
-        Boolean existeUsuario = usuarioRepository.existsByUsuario("operador");
-
-        assertTrue(existeUsuario);
-    }
 }

@@ -17,9 +17,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Bootstrap implements ApplicationRunner {
     private final IUsuarioRepository userRepository;
-    private final IChoferRepository choferRepository;
-
-
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -31,43 +28,24 @@ public class Bootstrap implements ApplicationRunner {
                 .rol(Rol.ADMINISTRADOR)
                 .build();
 
-        Usuario operador = Usuario.builder()
-                .usuario("operador")
+        Usuario vendedor = Usuario.builder()
+                .usuario("vendedor")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
                 .estadoUsuario(EstadoUsuario.HABILITADO)
-                .rol(Rol.OPERADOR)
+                .rol(Rol.VENDEDOR)
                 .build();
 
-        Usuario supervisor = Usuario.builder()
-                .usuario("supervisor")
-                .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
-                .estadoUsuario(EstadoUsuario.HABILITADO)
-                .rol(Rol.SUPERVISOR)
-                .build();
 
-        Usuario gerente = Usuario.builder()
+        Usuario choferu = Usuario.builder()
                 .usuario("gerente")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
                 .estadoUsuario(EstadoUsuario.HABILITADO)
-                .rol(Rol.GERENTE)
-                .build();
-
-        userRepository.saveAll(List.of(admin, operador, supervisor, gerente));
-
-
-        Usuario usuarioChofer = Usuario.builder()
-                .usuario("chofer")
-                .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
                 .rol(Rol.CHOFER)
-                .estadoUsuario(EstadoUsuario.HABILITADO)
                 .build();
 
-        Chofer chofer = Chofer.builder()
-                .usuario(usuarioChofer)
-                .nombre("chofer1")
-                .build();
+        userRepository.saveAll(List.of(admin, vendedor, choferu ));
 
-        choferRepository.saveAll(List.of(chofer));
+
 
     }
 

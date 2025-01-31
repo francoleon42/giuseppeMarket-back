@@ -1,23 +1,26 @@
 package com.giuseppemarket.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import com.giuseppemarket.utils.enums.CondicionProducto;
+import com.giuseppemarket.utils.enums.Estado;
+import com.giuseppemarket.utils.enums.Sucursal;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "producto")
 public class Producto {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Size(max = 255)
     @NotNull
     @Column(name = "nombre", nullable = false)
     private String nombre;
@@ -29,7 +32,7 @@ public class Producto {
     @Column(name = "cantidad")
     private Integer cantidad;
 
-    @Lob
+
     @Column(name = "descripcion")
     private String descripcion;
 
@@ -37,21 +40,21 @@ public class Producto {
     private Float costo;
 
     @Column(name = "porcentajeGanancia")
-    private Float porcentajeGanancia;
+    private double porcentajeGanancia;
 
     @Column(name = "ganancia")
-    private Float ganancia;
+    private double ganancia;
 
     @Column(name = "precio")
-    private Float precio;
+    private double precio;
 
     @Column(name = "descuento")
-    private Float descuento;
+    private double descuento;
 
-    @Column(name = "habilitado")
-    private Boolean habilitado;
+    @Column(name = "estado")
+    private Estado estado;
 
-    @Size(max = 50)
+
     @Column(name = "codigoBarras", length = 50)
     private String codigoBarras;
 
@@ -64,24 +67,24 @@ public class Producto {
     @Column(name = "stockMaximo")
     private Integer stockMaximo;
 
-    @Size(max = 100)
+
     @Column(name = "categoria", length = 100)
     private String categoria;
 
-    @Size(max = 255)
+
     @Column(name = "fabricante")
     private String fabricante;
 
-    @Size(max = 255)
+
     @Column(name = "proveedor")
     private String proveedor;
 
-    @Lob
-    @Column(name = "condicion")
-    private String condicion;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sucursal", nullable = false)
+    private Sucursal sucursal;
 
-    @Lob
-    @Column(name = "sucursal")
-    private String sucursal;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "condicion_producto", nullable = false)
+    private CondicionProducto condicionProducto;
 
 }

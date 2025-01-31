@@ -1,6 +1,6 @@
 package com.giuseppemarket.utils.enums;
 
-public enum EstadoUsuario {
+public enum Estado {
     HABILITADO,
     INHABILITADO
 }

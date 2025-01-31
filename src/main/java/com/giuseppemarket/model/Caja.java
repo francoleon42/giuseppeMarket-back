@@ -2,8 +2,7 @@ package com.giuseppemarket.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -11,9 +10,14 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "caja")
 public class Caja {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -37,11 +41,11 @@ public class Caja {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "idUsuario")
-    private Usuario idUsuario;
+    private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "idMontoReal")
-    private MontoReal idMontoReal;
+    @JoinColumn(name = "monto_real")
+    private MontoReal montoReal;
 
 }

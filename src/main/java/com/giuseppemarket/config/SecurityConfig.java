@@ -32,7 +32,6 @@ public class SecurityConfig {
 
     private static final String ADMINISTRADOR = Rol.ADMINISTRADOR.toString();
     private static final String VENDEDOR = Rol.VENDEDOR.toString();
-    private static final String CHOFER = Rol.CHOFER.toString();
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -80,11 +79,11 @@ public class SecurityConfig {
     private void configureVendedorEndpoints(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequest) {
         authRequest
                 .requestMatchers(HttpMethod.POST, "/chofer/registrar").hasRole(ADMINISTRADOR)
-                .requestMatchers(HttpMethod.GET, "/chofer/verVehiculo").hasAnyRole(CHOFER);
+                .requestMatchers(HttpMethod.GET, "/chofer/verVehiculo").hasAnyRole(ADMINISTRADOR);
 
     }
     private void configureAdministradorEndpoints(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequest) {
         authRequest
-                .requestMatchers(HttpMethod.POST, "/gestionDeCombustible/cargarCombustible").hasRole(CHOFER);
+                .requestMatchers(HttpMethod.POST, "/gestionDeCombustible/cargarCombustible").hasRole(ADMINISTRADOR);
     }
 }

@@ -24,26 +24,28 @@ public class Bootstrap implements ApplicationRunner {
         Usuario admin = Usuario.builder()
                 .usuario("admin")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
-                .estadoUsuario(EstadoUsuario.HABILITADO)
+                .estadoUsuario(Estado.HABILITADO)
                 .rol(Rol.ADMINISTRADOR)
+                .nombre("FrancoAdmin")
+                .sucursal(Sucursal.SUCURSAL_1)
+                .codVerificacionLogin("1")
                 .build();
 
         Usuario vendedor = Usuario.builder()
                 .usuario("vendedor")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
-                .estadoUsuario(EstadoUsuario.HABILITADO)
+                .estadoUsuario(Estado.HABILITADO)
                 .rol(Rol.VENDEDOR)
+                .nombre("FrancoVendedor")
+                .sucursal(Sucursal.SUCURSAL_1)
+                .codVerificacionLogin("1")
+
                 .build();
 
 
-        Usuario choferu = Usuario.builder()
-                .usuario("gerente")
-                .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
-                .estadoUsuario(EstadoUsuario.HABILITADO)
-                .rol(Rol.CHOFER)
-                .build();
 
-        userRepository.saveAll(List.of(admin, vendedor, choferu ));
+
+        userRepository.saveAll(List.of(admin, vendedor ));
 
 
 

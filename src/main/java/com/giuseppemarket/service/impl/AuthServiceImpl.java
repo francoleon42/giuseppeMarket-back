@@ -5,7 +5,7 @@ import com.giuseppemarket.dto.login.*;
 import com.giuseppemarket.exception.LoginException;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.repository.IUsuarioRepository;
-import com.giuseppemarket.utils.enums.EstadoUsuario;
+import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Rol;
 import com.giuseppemarket.exception.RegisterException;
 import com.giuseppemarket.model.Usuario;
@@ -37,7 +37,7 @@ public class AuthServiceImpl implements IAuthService {
                 .findByUsuario(userDto.getUsername())
                 .orElseThrow(() -> new NotFoundException("No se encontro el usuario con username: " + userDto.getUsername()));
 
-        if(user.getEstadoUsuario() == EstadoUsuario.INHABILITADO){
+        if(user.getEstadoUsuario() == Estado.INHABILITADO){
            throw new LoginException("El usuario esta inhabilitado");
         }
 
@@ -63,7 +63,7 @@ public class AuthServiceImpl implements IAuthService {
                 .usuario(userToRegisterDto.getUsername())
                 .contrasena(passwordEncoder.encode(userToRegisterDto.getPassword()))
                 .rol(Rol.getRol(userToRegisterDto.getRole()))
-                .estadoUsuario(EstadoUsuario.HABILITADO)
+                .estadoUsuario(Estado.HABILITADO)
                 .build();
 
         userRepository.save(user);
@@ -95,8 +95,8 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public void habilitar(Integer id) {
         Usuario user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("No se encontró el usuario con id: " + id));
-        if(user.getEstadoUsuario() == EstadoUsuario.INHABILITADO) {
-            user.setEstadoUsuario(EstadoUsuario.HABILITADO);
+        if(user.getEstadoUsuario() == Estado.INHABILITADO) {
+            user.setEstadoUsuario(Estado.HABILITADO);
             userRepository.save(user);
         }
     }
@@ -104,8 +104,8 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public void inhabilitar(Integer id) {
         Usuario user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("No se encontró el usuario con id: " + id));
-        if(user.getEstadoUsuario() == EstadoUsuario.HABILITADO) {
-            user.setEstadoUsuario(EstadoUsuario.INHABILITADO);
+        if(user.getEstadoUsuario() == Estado.HABILITADO) {
+            user.setEstadoUsuario(Estado.INHABILITADO);
             userRepository.save(user);
         }
     }

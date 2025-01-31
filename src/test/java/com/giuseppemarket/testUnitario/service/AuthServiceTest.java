@@ -7,7 +7,7 @@ import com.giuseppemarket.exception.RegisterException;
 import com.giuseppemarket.model.Usuario;
 import com.giuseppemarket.repository.IUsuarioRepository;
 import com.giuseppemarket.service.impl.AuthServiceImpl;
-import com.giuseppemarket.utils.enums.EstadoUsuario;
+import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Rol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,19 +70,14 @@ class AuthServiceImplTest {
                 .username("usuario")
                 .password("password")
                 .build();
-        chofer = Usuario.builder()
 
-                .id(1)
-                .rol(Rol.CHOFER)
-                .estadoUsuario(EstadoUsuario.HABILITADO)
-                .build();
         usuario = Usuario.builder()
                 .id(2)
-                .estadoUsuario(EstadoUsuario.INHABILITADO)
+                .estadoUsuario(Estado.INHABILITADO)
                 .contrasena("asdsa")
                 .rol(Rol.ADMINISTRADOR)
                 .build();
-        usuarios = List.of(usuario, chofer);
+        usuarios = List.of(usuario);
     }
 
     @Test
@@ -99,7 +94,7 @@ class AuthServiceImplTest {
         when(userRepository.findById(usuario.getId())).thenReturn(Optional.of(usuario));
         authService.habilitar(usuario.getId());
 
-        assertEquals(usuario.getEstadoUsuario(), EstadoUsuario.HABILITADO);
+        assertEquals(usuario.getEstadoUsuario(), Estado.HABILITADO);
         verify(userRepository, times(1)).save(any(Usuario.class));
 
     }

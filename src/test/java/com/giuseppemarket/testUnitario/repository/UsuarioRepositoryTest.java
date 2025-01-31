@@ -2,7 +2,7 @@ package com.giuseppemarket.testUnitario.repository;
 
 import com.giuseppemarket.model.Usuario;
 import com.giuseppemarket.repository.IUsuarioRepository;
-import com.giuseppemarket.utils.enums.EstadoUsuario;
+import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Rol;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ public class UsuarioRepositoryTest {
                 .usuario("operador")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
                 .rol(Rol.VENDEDOR)
-                .estadoUsuario(EstadoUsuario.HABILITADO)
+                .estadoUsuario(Estado.HABILITADO)
                 .build();
 
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
@@ -45,7 +45,7 @@ public class UsuarioRepositoryTest {
                 .usuario("vendedor")
                 .contrasena("$2a$10$RRAzywJFxaAG3pRlHXep6u6VNKi5KOTT3M8GCxDPHpAyZ0ofX2Bcu")
                 .rol(Rol.VENDEDOR)
-                .estadoUsuario(EstadoUsuario.HABILITADO)
+                .estadoUsuario(Estado.HABILITADO)
                 .build();
 
         usuarioRepository.save(usuario);

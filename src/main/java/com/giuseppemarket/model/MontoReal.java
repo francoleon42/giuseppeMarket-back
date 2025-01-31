@@ -1,34 +1,37 @@
 package com.giuseppemarket.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "monto_real")
 public class MontoReal {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "total")
-    private Integer total;
+    @Column(name = "monto_total")
+    private Integer montoTotal;
 
-    @Column(name = "tarjetas")
-    private Integer tarjetas;
+    @Column(name = "monto_tarjetas")
+    private Integer montoTarjetas;
 
-    @Column(name = "transferencias")
-    private Integer transferencias;
+    @Column(name = "monto_transferencias")
+    private Integer montoTransferencias;
 
-    @Column(name = "efectivo")
-    private Integer efectivo;
+    @Column(name = "monto_efectivo")
+    private Integer montoEfectivo;
 
-    @Column(name = "otros")
-    private Integer otros;
+    @Column(name = "monot_otros")
+    private Integer montoOtros;
 
     @Lob
     @Column(name = "observaciones")

@@ -29,10 +29,10 @@ public class Caja {
     private Instant cierre;
 
     @Column(name = "montoInicial")
-    private Integer montoInicial;
+    private double montoInicial;
 
     @Column(name = "montoFinal")
-    private Integer montoFinal;
+    private double montoFinal;
 
     @Lob
     @Column(name = "observaciones")

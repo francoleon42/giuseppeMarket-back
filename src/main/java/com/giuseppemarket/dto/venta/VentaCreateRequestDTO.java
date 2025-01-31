@@ -20,5 +20,7 @@ public class VentaCreateRequestDTO {
     String observaciones;
     double descuento;
 
+    Integer idUsuario;
+
 
 }

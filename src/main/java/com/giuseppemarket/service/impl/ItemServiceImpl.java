@@ -17,5 +17,6 @@ public class ItemServiceImpl implements IItemService {
     public void venderItem(Integer idProduc) {
         Item itemMasViejoSinVender = itemRepository.findItemMasViejoSinVender(idProduc);
         itemMasViejoSinVender.setFechaVenta(LocalDate.now());
+        itemRepository.save(itemMasViejoSinVender);
     }
 }

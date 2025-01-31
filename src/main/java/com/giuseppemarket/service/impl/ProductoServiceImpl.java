@@ -1,12 +1,11 @@
 package com.giuseppemarket.service.impl;
 
-import com.giuseppemarket.dto.ProductoViewBySucursalResponseDTO;
+import com.giuseppemarket.dto.ProductoViewByVentaResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IItemService;
 import com.giuseppemarket.service.IProductoService;
-import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Sucursal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,13 +40,29 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
-    public List<ProductoViewBySucursalResponseDTO> obtenerProductosBySucursal(Sucursal sucursal) {
+    public List<ProductoViewByVentaResponseDTO> obtenerProductosBySucursal(Sucursal sucursal) {
         return productoRepository.findBySucursal(sucursal).stream()
                 .map(this::convertToProducto)
                 .toList();
     }
-    private ProductoViewBySucursalResponseDTO convertToProducto(Producto producto) {
-        return ProductoViewBySucursalResponseDTO.builder()
+
+    @Override
+    public List<ProductoViewByVentaResponseDTO> obtenerProductosByCodigoBarra(String codigoBarra) {
+        return productoRepository.findByCodigoBarras(codigoBarra).stream()
+                .map(this::convertToProducto)
+                .toList();
+    }
+
+    @Override
+    public List<ProductoViewByVentaResponseDTO> obtenerProductosByCategoria(String categoria) {
+        return productoRepository.findByCategoriaContaining(categoria).stream()
+                .map(this::convertToProducto)
+                .toList();
+
+    }
+
+    private ProductoViewByVentaResponseDTO convertToProducto(Producto producto) {
+        return ProductoViewByVentaResponseDTO.builder()
                 .id(producto.getId())
                 .categoria(producto.getCategoria())
                 .codigoBarras(producto.getCodigoBarras())

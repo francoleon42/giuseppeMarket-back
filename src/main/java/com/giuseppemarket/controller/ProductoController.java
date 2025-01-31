@@ -28,6 +28,16 @@ public class ProductoController {
 
     }
 
+    @GetMapping("/codigoBarra/{cod}")
+    public ResponseEntity<?> getProductoByCodigoBarra(@PathVariable("cod") String codigoBarra) {
+        return ResponseEntity.ok(productoService.obtenerProductosByCodigoBarra(codigoBarra));
+    }
+
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<?> getProductosByCategoria(@PathVariable("categoria") String categoria) {
+        return ResponseEntity.ok(productoService.obtenerProductosByCategoria(categoria));
+    }
+
     private Usuario getUserFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication != null && authentication.isAuthenticated())) {

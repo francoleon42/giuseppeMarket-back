@@ -80,6 +80,8 @@ public class SecurityConfig {
         authRequest
                 // pree venta
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/productos/codigoBarra/{cod}").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/productos/categoria/{categoria}").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/venta/condiciones_venta").hasRole(VENDEDOR)
 
                 //venta

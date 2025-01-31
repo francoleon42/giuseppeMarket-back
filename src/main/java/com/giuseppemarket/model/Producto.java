@@ -31,10 +31,6 @@ public class Producto {
     @Column(name = "marca")
     private String marca;
 
-    @Column(name = "cantidad")
-    private Integer cantidad;
-
-
     @Column(name = "descripcion")
     private String descripcion;
 

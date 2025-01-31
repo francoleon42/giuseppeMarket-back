@@ -78,10 +78,16 @@ public class SecurityConfig {
 
     private void configureVendedorEndpoints(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequest) {
         authRequest
-                .requestMatchers(HttpMethod.POST, "/chofer/registrar").hasRole(ADMINISTRADOR)
-                .requestMatchers(HttpMethod.GET, "/chofer/verVehiculo").hasAnyRole(ADMINISTRADOR);
+                // pree venta
+                .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/venta/condiciones_venta").hasRole(VENDEDOR)
+
+                //venta
+                .requestMatchers(HttpMethod.POST, "/venta/crear").hasRole(VENDEDOR);
+
 
     }
+
     private void configureAdministradorEndpoints(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequest) {
         authRequest
                 .requestMatchers(HttpMethod.POST, "/gestionDeCombustible/cargarCombustible").hasRole(ADMINISTRADOR);

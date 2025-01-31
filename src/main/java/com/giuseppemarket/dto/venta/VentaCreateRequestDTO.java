@@ -16,11 +16,9 @@ import java.util.List;
 public class VentaCreateRequestDTO {
     CondicionVenta condicionVenta;
     List<Integer> idproductos;
-
     String observaciones;
     double descuento;
 
-    Integer idUsuario;
 
 
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Bootstrap implements ApplicationRunner {
     private final IImpuestoRepository impuestoRepository;
     private final IProductoImpuestoRepository productoImpuestoRepository;
     private final IItemRepository itemRepository;
+    private final ICajaRepository cajaRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -56,7 +58,6 @@ public class Bootstrap implements ApplicationRunner {
         Producto producto1 = Producto.builder()
                 .nombre("Laptop Dell")
                 .marca("Dell")
-                .cantidad(10)
                 .descripcion("Laptop de alto rendimiento")
                 .costo(800.0f)
                 .porcentajeGanancia(20.0)
@@ -78,7 +79,6 @@ public class Bootstrap implements ApplicationRunner {
         Producto producto2 = Producto.builder()
                 .nombre("Smartphone Samsung")
                 .marca("Samsung")
-                .cantidad(15)
                 .descripcion("Teléfono inteligente de última generación")
                 .costo(500.0f)
                 .porcentajeGanancia(25.0)
@@ -100,7 +100,6 @@ public class Bootstrap implements ApplicationRunner {
         Producto producto3 = Producto.builder()
                 .nombre("Monitor LG 24")
                 .marca("LG")
-                .cantidad(8)
                 .descripcion("Monitor Full HD de 24 pulgadas")
                 .costo(200.0f)
                 .porcentajeGanancia(30.0)
@@ -109,8 +108,8 @@ public class Bootstrap implements ApplicationRunner {
                 .descuento(5.0)
                 .estado(Estado.HABILITADO)
                 .codigoBarras("4567891234567")
-                .stockActual(8)
-                .stockMinimo(2)
+                .stockActual(15)
+                .stockMinimo(10)
                 .stockMaximo(15)
                 .categoria("Periféricos")
                 .fabricante("LG Electronics")
@@ -147,6 +146,19 @@ public class Bootstrap implements ApplicationRunner {
                         .build());
             }
         }
+
+
+        // ABRIR CAJA
+        Caja caja = Caja.builder()
+                .apertura(Instant.now())
+                .montoInicial(1000.0)
+                .observaciones("Apertura inicial de caja")
+                .usuario(vendedor)
+                .montoReal(null)
+                .build();
+
+
+        cajaRepository.save(caja);
 
     }
 }

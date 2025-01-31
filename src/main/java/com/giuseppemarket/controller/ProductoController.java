@@ -1,12 +1,10 @@
 package com.giuseppemarket.controller;
 
-
-import com.giuseppemarket.dto.login.LoginRequestDTO;
 import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Usuario;
-import com.giuseppemarket.service.IVentaService;
+import com.giuseppemarket.service.IProductoService;
 import com.giuseppemarket.utils.enums.Rol;
 import com.giuseppemarket.utils.enums.Sucursal;
 import lombok.RequiredArgsConstructor;
@@ -16,21 +14,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/venta")
+@RequestMapping("/productos")
 @RequiredArgsConstructor
-public class VentaController {
+public class ProductoController {
 
-    private final IVentaService ventaService;
+    private final IProductoService productoService;
 
-    @PostMapping("/crear")
-    public ResponseEntity<?> crear(@RequestBody VentaCreateRequestDTO ventaCreateRequestDTO) {
-        Usuario usuario = getUserFromToken();
-        return ResponseEntity.ok(ventaService.realizarVenta(ventaCreateRequestDTO,usuario.getId()));
-    }
+    //TODO: obtener productus de la sucursal del vendor
+    @GetMapping("/sucursal")
+    public ResponseEntity<?> getProductosSucursal() {
+        Sucursal sucursal = getUserFromToken().getSucursal();
+        return ResponseEntity.ok(productoService.obtenerProductosBySucursal(sucursal));
 
-    @GetMapping("/condiciones_venta")
-    public ResponseEntity<?> getCondiciones_venta() {
-        return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
     }
 
     private Usuario getUserFromToken() {

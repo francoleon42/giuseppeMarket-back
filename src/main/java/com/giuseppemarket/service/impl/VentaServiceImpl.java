@@ -12,10 +12,13 @@ import com.giuseppemarket.service.IAuthService;
 import com.giuseppemarket.service.ICajaService;
 import com.giuseppemarket.service.IProductoService;
 import com.giuseppemarket.service.IVentaService;
+import com.giuseppemarket.utils.enums.CondicionVenta;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +29,7 @@ public class VentaServiceImpl implements IVentaService {
 
 
     @Override
-    public VentaCreateResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO) {
+    public VentaCreateResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO,Integer idUsuario) {
         double subtotal = 0;
         //afecta a stock y obtiene subtotal
         for (Integer idProducto : ventaCreateRequestDTO.getIdproductos()){
@@ -48,7 +51,7 @@ public class VentaServiceImpl implements IVentaService {
         ventaRepository.save(venta);
 
         // aafecta a la caja
-        cajaService.incrementarCaja(ventaCreateRequestDTO.getIdUsuario(),total);
+        cajaService.incrementarCaja(idUsuario,total);
 
         return VentaCreateResponseDTO
                 .builder()
@@ -60,5 +63,10 @@ public class VentaServiceImpl implements IVentaService {
                 .total(venta.getTotal())
                 .condicionVenta(venta.getCondicionVenta().toString())
                 .build();
+    }
+
+    @Override
+    public List<CondicionVenta> obtenerCondicionesVenta() {
+        return Arrays.asList(CondicionVenta.values());
     }
 }

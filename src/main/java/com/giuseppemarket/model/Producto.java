@@ -8,6 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -86,5 +88,8 @@ public class Producto {
     @Enumerated(EnumType.STRING)
     @Column(name = "condicion_producto", nullable = false)
     private CondicionProducto condicionProducto;
+
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items;
 
 }

@@ -11,8 +11,8 @@ import org.hibernate.annotations.OnDeleteAction;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "item_impuesto")
-public class ItemImpuesto {
+@Table(name = "producto_impuesto")
+public class ProductoImpuesto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

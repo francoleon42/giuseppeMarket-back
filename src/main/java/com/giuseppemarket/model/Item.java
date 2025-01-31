@@ -2,10 +2,7 @@ package com.giuseppemarket.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "item")
@@ -38,12 +36,12 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "idVenta")
-    private Venta idVenta;
+    @JoinColumn(name = "id_venta")
+    private Venta venta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
-    @JoinColumn(name = "idProducto")
-    private Producto idProducto;
+    @JoinColumn(name = "id_producto")
+    private Producto producto;
 
 }

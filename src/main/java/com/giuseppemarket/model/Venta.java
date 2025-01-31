@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -48,5 +49,9 @@ public class Venta {
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "idUsuario")
     private Usuario idUsuario;
+
+    @OneToMany(mappedBy = "venta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Item> items;
+
 
 }

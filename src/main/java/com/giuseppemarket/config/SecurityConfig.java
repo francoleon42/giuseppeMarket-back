@@ -91,6 +91,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/productos/deficit_stock").hasRole(VENDEDOR)
                 // amb y asignacion impuestos
                 .requestMatchers(HttpMethod.POST, "/impuesto/crear").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.DELETE, "/impuesto/remove/{idImpuesto}").hasRole(VENDEDOR)
                 // pree venta epic 1
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/codigoBarra/{cod}").hasRole(VENDEDOR)

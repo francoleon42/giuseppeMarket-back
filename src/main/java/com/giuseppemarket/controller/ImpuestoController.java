@@ -25,5 +25,10 @@ public class ImpuestoController {
         return ResponseEntity.ok(impuestoService.update(impuestoRequestDTO,idImpuesto));
     }
 
+    @DeleteMapping("/remove/{idImpuesto}")
+    public ResponseEntity<?> delete(@PathVariable("idImpuesto") Integer idImpuesto) {
+        return ResponseEntity.ok(impuestoService.remove(idImpuesto));
+    }
+
 
 }

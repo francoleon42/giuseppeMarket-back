@@ -12,17 +12,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductoViewByVentaResponseDTO {
      Integer id;
-     String categoria;
-     String codigoBarras;
      String nombre;
      String marca;
      String descripcion;
+     double costo;
+     String categoria;
+     String codigoBarras;
      String sucursal;
      String condicionProducto;
      Integer stockActual;
      Integer stockMinimo;
      Integer stockMaximo;
-     Float costo;
      double porcentajeGanancia;
      double ganancia;
      double precio;

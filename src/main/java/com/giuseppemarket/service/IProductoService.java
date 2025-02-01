@@ -1,6 +1,6 @@
 package com.giuseppemarket.service;
 
-import com.giuseppemarket.dto.producto.ProductoCreateRequestDTO;
+import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoViewByVentaResponseDTO;
 import com.giuseppemarket.utils.enums.CondicionProducto;
 import com.giuseppemarket.utils.enums.Estado;
@@ -18,9 +18,8 @@ public interface IProductoService {
     List<Estado> obtenerEstados();
     List<Sucursal> obtenerSucursales();
     List<CondicionProducto> obtenerCondicionProducto();
-    String crear(ProductoCreateRequestDTO productoCreateRequestDTO);
+    String crear(ProductoRequestDTO productoRequestDTO);
 
-    String habilitar(Integer idProducto);
-    String inhabilitar(Integer idProducto);
+    String update(ProductoRequestDTO productoRequestDTO,Integer idProducto);
 
 }

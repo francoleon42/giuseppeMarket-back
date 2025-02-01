@@ -1,7 +1,6 @@
 package com.giuseppemarket.controller;
 
-import com.giuseppemarket.dto.producto.ProductoCreateRequestDTO;
-import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
+import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Usuario;
@@ -54,19 +53,16 @@ public class ProductoController {
     }
     //crear producto
     @PostMapping("/crear")
-    public ResponseEntity<?> crear(@RequestBody ProductoCreateRequestDTO productoCreateRequestDTO) {
+    public ResponseEntity<?> crear(@RequestBody ProductoRequestDTO productoCreateRequestDTO) {
         return ResponseEntity.ok(productoService.crear(productoCreateRequestDTO));
     }
 
-    @PatchMapping("/inhabilitar/{idProducto}")
-    public ResponseEntity<?> inhabilitar(@PathVariable("idProducto") Integer idProducto) {
-        return ResponseEntity.ok(productoService.inhabilitar(idProducto));
-    }
-    @PatchMapping("/habilitar/{idProducto}")
-    public ResponseEntity<?> habilitar(@PathVariable("idProducto") Integer idProducto) {
-        return ResponseEntity.ok(productoService.habilitar(idProducto));
+    @PatchMapping("/update/{idProducto}")
+    public ResponseEntity<?> inhabilitar(@RequestBody ProductoRequestDTO productoCreateRequestDTO,@PathVariable("idProducto") Integer idProducto) {
+        return ResponseEntity.ok(productoService.update(productoCreateRequestDTO,idProducto));
     }
 
+    
     private Usuario getUserFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication != null && authentication.isAuthenticated())) {

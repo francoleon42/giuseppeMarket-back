@@ -35,7 +35,7 @@ public class Producto {
     private String descripcion;
 
     @Column(name = "costo")
-    private Float costo;
+    private double costo;
 
     @Column(name = "porcentajeGanancia")
     private double porcentajeGanancia;

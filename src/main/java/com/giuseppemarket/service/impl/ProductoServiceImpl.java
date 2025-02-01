@@ -1,6 +1,6 @@
 package com.giuseppemarket.service.impl;
 
-import com.giuseppemarket.dto.producto.ProductoCreateRequestDTO;
+import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoViewByVentaResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Producto;
@@ -8,7 +8,6 @@ import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IItemService;
 import com.giuseppemarket.service.IProductoService;
 import com.giuseppemarket.utils.enums.CondicionProducto;
-import com.giuseppemarket.utils.enums.CondicionVenta;
 import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Sucursal;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +35,6 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     public double subtotalDeProductos(List<Integer> idProductos) {
-        //TODO: revisar si asi se obtiene el subtotal.
-
         double subtotal = 0.0;
         for (Integer idProducto : idProductos) {
             Producto p = obtenerProductoById(idProducto);
@@ -70,31 +67,30 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
-    public String crear(ProductoCreateRequestDTO productoCreateRequestDTO) {
-        // TODO : agregar descuento
-        double costo = productoCreateRequestDTO.getCosto();
-        double porcentajeGan = productoCreateRequestDTO.getPorcentajeGanancia();
+    public String crear(ProductoRequestDTO productoRequestDTO) {
+        double costo = productoRequestDTO.getCosto();
+        double porcentajeGan = productoRequestDTO.getPorcentajeGanancia();
 
-        double precio = costo+ ( ( costo * porcentajeGan)/100);
-        double precioConDescuento = precio - ( (precio * productoCreateRequestDTO.getDescuento())/100 );
-        double ganancia = precioConDescuento  -  costo ;
+        double precio = costo + ((costo * porcentajeGan) / 100);
+        double precioConDescuento = precio - ((precio * productoRequestDTO.getDescuento()) / 100);
+        double ganancia = precioConDescuento - costo;
         Producto productoNew = Producto.builder()
-                .nombre(productoCreateRequestDTO.getNombre())
-                .marca(productoCreateRequestDTO.getMarca())
-                .descripcion(productoCreateRequestDTO.getDescripcion())
-                .costo(productoCreateRequestDTO.getCosto())
-                .porcentajeGanancia(productoCreateRequestDTO.getPorcentajeGanancia())
-                .descuento(productoCreateRequestDTO.getDescuento())
-                .codigoBarras(productoCreateRequestDTO.getCodigoBarras())
-                .stockActual(productoCreateRequestDTO.getStockActual())
-                .stockMinimo(productoCreateRequestDTO.getStockMinimo())
-                .stockMaximo(productoCreateRequestDTO.getStockMaximo())
-                .categoria(productoCreateRequestDTO.getCategoria())
-                .fabricante(productoCreateRequestDTO.getFabricante())
-                .proveedor(productoCreateRequestDTO.getProveedor())
-                .estado(productoCreateRequestDTO.getEstado())
-                .sucursal(productoCreateRequestDTO.getSucursal())
-                .condicionProducto(productoCreateRequestDTO.getCondicionProducto())
+                .nombre(productoRequestDTO.getNombre())
+                .marca(productoRequestDTO.getMarca())
+                .descripcion(productoRequestDTO.getDescripcion())
+                .costo(productoRequestDTO.getCosto())
+                .porcentajeGanancia(productoRequestDTO.getPorcentajeGanancia())
+                .descuento(productoRequestDTO.getDescuento())
+                .codigoBarras(productoRequestDTO.getCodigoBarras())
+                .stockActual(productoRequestDTO.getStockActual())
+                .stockMinimo(productoRequestDTO.getStockMinimo())
+                .stockMaximo(productoRequestDTO.getStockMaximo())
+                .categoria(productoRequestDTO.getCategoria())
+                .fabricante(productoRequestDTO.getFabricante())
+                .proveedor(productoRequestDTO.getProveedor())
+                .estado(productoRequestDTO.getEstado())
+                .sucursal(productoRequestDTO.getSucursal())
+                .condicionProducto(productoRequestDTO.getCondicionProducto())
                 .precio(precioConDescuento)
                 .ganancia(ganancia)
                 .build();
@@ -104,15 +100,51 @@ public class ProductoServiceImpl implements IProductoService {
         return "";
     }
 
+    @Override
+    public String update(ProductoRequestDTO productoRequestDTO, Integer idProducto) {
+        double costo = productoRequestDTO.getCosto();
+        double porcentajeGan = productoRequestDTO.getPorcentajeGanancia();
+
+        double precio = costo + ((costo * porcentajeGan) / 100);
+        double precioConDescuento = precio - ((precio * productoRequestDTO.getDescuento()) / 100);
+        double ganancia = precioConDescuento - costo;
+
+        Producto p = obtenerProductoById(idProducto);
+        p.setNombre(productoRequestDTO.getNombre());
+        p.setMarca(productoRequestDTO.getMarca());
+        p.setDescripcion(productoRequestDTO.getDescripcion());
+        p.setCosto(productoRequestDTO.getCosto());
+        p.setPorcentajeGanancia(productoRequestDTO.getPorcentajeGanancia());
+        p.setDescuento(productoRequestDTO.getDescuento());
+        p.setCodigoBarras(productoRequestDTO.getCodigoBarras());
+        p.setStockActual(productoRequestDTO.getStockActual());
+        p.setStockMinimo(productoRequestDTO.getStockMinimo());
+        p.setStockMaximo(productoRequestDTO.getStockMaximo());
+        p.setCategoria(productoRequestDTO.getCategoria());
+        p.setFabricante(productoRequestDTO.getFabricante());
+        p.setProveedor(productoRequestDTO.getProveedor());
+        p.setEstado(productoRequestDTO.getEstado());
+        //La sucursal no se editara
+//        p.setSucursal(productoRequestDTO.getSucursal());
+        p.setCondicionProducto(productoRequestDTO.getCondicionProducto());
+        p.setPrecio(precioConDescuento);
+        p.setGanancia(ganancia);
+        productoRepository.save(p);
+
+        return "PRODUCTO ACTUALIZADO";
+    }
+
 
     @Override
     public List<Estado> obtenerEstados() {
         return Arrays.asList(Estado.values());
     }
+
     @Override
     public List<Sucursal> obtenerSucursales() {
         return Arrays.asList(Sucursal.values());
     }
+
     @Override
     public List<CondicionProducto> obtenerCondicionProducto() {
         return Arrays.asList(CondicionProducto.values());
@@ -142,30 +174,6 @@ public class ProductoServiceImpl implements IProductoService {
                 .build();
     }
 
-    @Override
-    public String habilitar(Integer idProducto) {
-        Producto p = obtenerProductoById(idProducto);
-        if(p.getEstado().equals(Estado.INHABILITADO)) {
-            p.setEstado(Estado.HABILITADO);
-            productoRepository.save(p);
-            return "HABILITADO EL PRODUCTO CON EL ID : " + p.getId();
-        }else{
-            throw new RuntimeException("El producto no tiene estado INHABILITADO");
-        }
-    }
-
-    @Override
-    public String inhabilitar(Integer idProducto) {
-        Producto p = obtenerProductoById(idProducto);
-        if(p.getEstado().equals(Estado.HABILITADO)) {
-            p.setEstado(Estado.INHABILITADO);
-            productoRepository.save(p);
-            return "INHABILITADO EL PRODUCTO CON EL ID : " + p.getId();
-        }else{
-            throw new RuntimeException("El producto no tiene estado HABILITADO");
-        }
-
-    }
 
     private Producto obtenerProductoById(Integer id) {
         return productoRepository

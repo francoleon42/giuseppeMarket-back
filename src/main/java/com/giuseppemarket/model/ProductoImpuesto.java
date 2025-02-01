@@ -20,12 +20,12 @@ public class ProductoImpuesto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "idProducto")
-    private Producto idProducto;
+    @JoinColumn(name = "producto")
+    private Producto producto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "idImpuesto")
-    private Impuesto idImpuesto;
+    @JoinColumn(name = "impuesto")
+    private Impuesto impuesto;
 
 }

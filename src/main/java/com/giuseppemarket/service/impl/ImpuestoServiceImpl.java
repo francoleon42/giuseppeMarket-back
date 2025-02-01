@@ -1,11 +1,13 @@
 package com.giuseppemarket.service.impl;
 
-import com.giuseppemarket.dto.impuesto.ImpuestoRequestDTO;
-import com.giuseppemarket.dto.impuesto.ImpuestoResponseDTO;
+import com.giuseppemarket.dto.impuesto.*;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Impuesto;
 import com.giuseppemarket.model.Producto;
+import com.giuseppemarket.model.ProductoImpuesto;
 import com.giuseppemarket.repository.IImpuestoRepository;
+import com.giuseppemarket.repository.IProductoImpuestoRepository;
+import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IImpuestoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ImpuestoServiceImpl implements IImpuestoService {
     private final IImpuestoRepository impuestoRepository;
+    private final IProductoRepository productoRepository;
+    private final IProductoImpuestoRepository productoImpuestoRepository;
 
     @Override
     public ImpuestoResponseDTO crear(ImpuestoRequestDTO impuestoRequestDTO) {
@@ -54,7 +58,31 @@ public class ImpuestoServiceImpl implements IImpuestoService {
         return "REMOVIDO EL IMPUESTO ID: " + id;
     }
 
+    @Override
+    public ImpuestoAsignacionResponseDTO asignar(ImpuestoAsignacionRequestDTO impuestoAsignacionRequestDTO) {
+        Impuesto impuesto = impuestoRepository
+                .findById(impuestoAsignacionRequestDTO.getIdImpuesto())
+                .orElseThrow(() -> new NotFoundException("No se encontro el impuesto con el id: " + impuestoAsignacionRequestDTO.getIdImpuesto()));
+        Producto producto = productoRepository
+                .findById(impuestoAsignacionRequestDTO.getIdProducto())
+                .orElseThrow(() -> new NotFoundException("No se encontro el producto con el id: " + impuestoAsignacionRequestDTO.getIdProducto()));
 
-
+        ProductoImpuesto asignacion = ProductoImpuesto.builder()
+                .impuesto(impuesto)
+                .producto(producto)
+                .build();
+        productoImpuestoRepository.save(asignacion);
+        return ImpuestoAsignacionResponseDTO.builder()
+                .impuesto(ImpuestoResponseDTO.builder().valor(impuesto.getValor()).nombre(impuesto.getNombre()).build())
+                .producto(ProductoAsignacionResponseDTO.builder()
+                        .id(producto.getId())
+                        .codigoBarras(producto.getCodigoBarras())
+                        .categoria(producto.getCategoria())
+                        .nombre(producto.getNombre())
+                        .marca(producto.getMarca())
+                        .proveedor(producto.getProveedor())
+                        .build())
+                .build();
+    }
 
 }

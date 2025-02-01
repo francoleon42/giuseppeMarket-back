@@ -1,5 +1,6 @@
 package com.giuseppemarket.controller;
 
+import com.giuseppemarket.dto.impuesto.ImpuestoAsignacionRequestDTO;
 import com.giuseppemarket.dto.impuesto.ImpuestoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.service.IImpuestoService;
@@ -28,6 +29,11 @@ public class ImpuestoController {
     @DeleteMapping("/remove/{idImpuesto}")
     public ResponseEntity<?> delete(@PathVariable("idImpuesto") Integer idImpuesto) {
         return ResponseEntity.ok(impuestoService.remove(idImpuesto));
+    }
+
+    @PostMapping("/asignar")
+    public ResponseEntity<?> asignar(@RequestBody ImpuestoAsignacionRequestDTO impuestoAsignacionRequestDTO) {
+        return ResponseEntity.ok(impuestoService.asignar(impuestoAsignacionRequestDTO));
     }
 
 

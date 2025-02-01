@@ -10,8 +10,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImpuestoAsignacionResponseDTO {
+public class ProductoAsignacionResponseDTO {
 
-    ImpuestoResponseDTO impuesto;
-    ProductoAsignacionResponseDTO producto;
+    Integer id;
+    String codigoBarras;
+    String categoria;
+    String nombre;
+    String marca;
+    String proveedor;
+
 }

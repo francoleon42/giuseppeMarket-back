@@ -143,9 +143,9 @@ public class Bootstrap implements ApplicationRunner {
 
         // Asociar productos con impuesto
         productoImpuestoRepository.saveAll(List.of(
-                ProductoImpuesto.builder().idProducto(producto1).idImpuesto(iva).build(),
-                ProductoImpuesto.builder().idProducto(producto2).idImpuesto(iva).build(),
-                ProductoImpuesto.builder().idProducto(producto3).idImpuesto(iva).build()
+                ProductoImpuesto.builder().producto(producto1).impuesto(iva).build(),
+                ProductoImpuesto.builder().producto(producto2).impuesto(iva).build(),
+                ProductoImpuesto.builder().producto(producto3).impuesto(iva).build()
         ));
 
         // Crear 5 items para cada producto

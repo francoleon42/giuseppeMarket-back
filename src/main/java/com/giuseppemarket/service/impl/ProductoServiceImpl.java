@@ -72,6 +72,8 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     public String crear(ProductoRequestDTO productoRequestDTO) {
+
+        //TODO : aplicar impuestos
         double costo = productoRequestDTO.getCosto();
         double porcentajeGan = productoRequestDTO.getPorcentajeGanancia();
 

@@ -76,7 +76,8 @@ public class ProductoServiceImpl implements IProductoService {
         double porcentajeGan = productoCreateRequestDTO.getPorcentajeGanancia();
 
         double precio = costo+ ( ( costo * porcentajeGan)/100);
-        double ganancia = precio  -  costo ;
+        double precioConDescuento = precio - ( (precio * productoCreateRequestDTO.getDescuento())/100 );
+        double ganancia = precioConDescuento  -  costo ;
         Producto productoNew = Producto.builder()
                 .nombre(productoCreateRequestDTO.getNombre())
                 .marca(productoCreateRequestDTO.getMarca())
@@ -94,7 +95,7 @@ public class ProductoServiceImpl implements IProductoService {
                 .estado(productoCreateRequestDTO.getEstado())
                 .sucursal(productoCreateRequestDTO.getSucursal())
                 .condicionProducto(productoCreateRequestDTO.getCondicionProducto())
-                .precio(precio)
+                .precio(precioConDescuento)
                 .ganancia(ganancia)
                 .build();
 

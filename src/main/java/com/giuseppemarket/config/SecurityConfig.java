@@ -80,6 +80,9 @@ public class SecurityConfig {
         authRequest
 
                 // amb producto
+                .requestMatchers(HttpMethod.GET, "/productos/estado").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/productos/sucursales").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/productos/condiciones_productos").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.POST, "/productos/crear").hasRole(VENDEDOR)
                 // pree venta
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)

@@ -73,10 +73,11 @@ public class Bootstrap implements ApplicationRunner {
                 .sucursal(Sucursal.SUCURSAL_1)
                 .condicionProducto(CondicionProducto.MINORISTA)
                 .build();
-        // TODO : agregar descuento
+
         double precio1 = producto1.getCosto()+ ( ( producto1.getCosto() * producto1.getPorcentajeGanancia())/100);
-        double ganancia1 = precio1  -  producto1.getCosto() ;
-        producto1.setPrecio(precio1);
+        double precio1Des= precio1 - ((precio1 * producto1.getDescuento())/100) ;
+        double ganancia1 = precio1Des  -  producto1.getCosto() ;
+        producto1.setPrecio(precio1Des);
         producto1.setGanancia(ganancia1);
 
         Producto producto2 = Producto.builder()
@@ -97,10 +98,11 @@ public class Bootstrap implements ApplicationRunner {
                 .sucursal(Sucursal.SUCURSAL_2)
                 .condicionProducto(CondicionProducto.MAYORISTA)
                 .build();
-        // TODO : agregar descuento
+
         double precio2 = producto2.getCosto()+ ( ( producto2.getCosto() * producto2.getPorcentajeGanancia())/100);
-        double ganancia2 = precio2  -  producto2.getCosto() ;
-        producto2.setPrecio(precio2);
+        double precio2Des= precio2 - ((precio2 * producto2.getDescuento())/100) ;
+        double ganancia2 = precio2Des  -  producto2.getCosto() ;
+        producto2.setPrecio(precio2Des);
         producto2.setGanancia(ganancia2);
 
         Producto producto3 = Producto.builder()
@@ -109,7 +111,7 @@ public class Bootstrap implements ApplicationRunner {
                 .descripcion("Monitor Full HD de 24 pulgadas")
                 .costo(200.0f)
                 .porcentajeGanancia(30.0)
-                .descuento(5.0)
+                .descuento(10.0)
                 .estado(Estado.HABILITADO)
                 .codigoBarras("4567891234567")
                 .stockActual(15)
@@ -122,10 +124,11 @@ public class Bootstrap implements ApplicationRunner {
                 .condicionProducto(CondicionProducto.MAYORISTA)
                 .build();
 
-        // TODO : agregar descuento
-        double precio3 = producto3.getCosto()+ ( ( producto3.getCosto() * producto3.getPorcentajeGanancia())/100);
-        double ganancia3 = precio3  -  producto3.getCosto() ;
-        producto3.setPrecio(precio3);
+
+        double precio3 = producto3.getCosto() + ( ( producto3.getCosto() * producto3.getPorcentajeGanancia())/100);
+        double precio3Des= precio3 - ((precio3 * producto3.getDescuento())/100) ;
+        double ganancia3 = precio3Des  -  producto3.getCosto() ;
+        producto3.setPrecio(precio3Des);
         producto3.setGanancia(ganancia3);
 
         productoRepository.saveAll(List.of(producto1, producto2, producto3));

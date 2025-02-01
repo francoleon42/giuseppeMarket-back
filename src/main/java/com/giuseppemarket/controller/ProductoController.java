@@ -37,7 +37,7 @@ public class ProductoController {
     }
 
     // Epic 2
-    // ABM de prudctos
+    // ABM de pruductos
 
     // obtener enums para crear producto
     @GetMapping("/sucursales")

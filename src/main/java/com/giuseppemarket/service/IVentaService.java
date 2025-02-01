@@ -9,4 +9,6 @@ import java.util.List;
 public interface IVentaService {
     VentaCreateResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO,Integer idUsuario);
     List<CondicionVenta> obtenerCondicionesVenta();
+
+
 }

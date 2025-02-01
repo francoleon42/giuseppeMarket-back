@@ -1,17 +1,20 @@
 package com.giuseppemarket.service.impl;
 
-import com.giuseppemarket.dto.ProductoViewByVentaResponseDTO;
+import com.giuseppemarket.dto.producto.ProductoCreateRequestDTO;
+import com.giuseppemarket.dto.producto.ProductoViewByVentaResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IItemService;
 import com.giuseppemarket.service.IProductoService;
 import com.giuseppemarket.utils.enums.CondicionProducto;
+import com.giuseppemarket.utils.enums.CondicionVenta;
 import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Sucursal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -38,14 +41,7 @@ public class ProductoServiceImpl implements IProductoService {
         double subtotal = 0.0;
         for (Integer idProducto : idProductos) {
             Producto p = obtenerProductoById(idProducto);
-            double costo = p.getCosto(); // lo ingresa el usuarioS
-            double gananciaPorcentaje = p.getPorcentajeGanancia(); // lo ingresa el usuarioS
-            double precio = costo+((costo * gananciaPorcentaje)/100);
-            double ganacia = precio  - costo ;
-            subtotal += precio;
-
-            p.setPrecio(precio);
-            p.setGanancia(ganacia);
+            subtotal += p.getPrecio();
             productoRepository.save(p);
         }
         return subtotal;
@@ -71,6 +67,52 @@ public class ProductoServiceImpl implements IProductoService {
                 .map(this::convertToProducto)
                 .toList();
 
+    }
+
+    @Override
+    public String crear(ProductoCreateRequestDTO productoCreateRequestDTO) {
+        // TODO : agregar descuento
+        double costo = productoCreateRequestDTO.getCosto();
+        double porcentajeGan = productoCreateRequestDTO.getPorcentajeGanancia();
+
+        double precio = costo+ ( ( costo * porcentajeGan)/100);
+        double ganancia = precio  -  costo ;
+        Producto productoNew = Producto.builder()
+                .nombre(productoCreateRequestDTO.getNombre())
+                .marca(productoCreateRequestDTO.getMarca())
+                .descripcion(productoCreateRequestDTO.getDescripcion())
+                .costo(productoCreateRequestDTO.getCosto())
+                .porcentajeGanancia(productoCreateRequestDTO.getPorcentajeGanancia())
+                .descuento(productoCreateRequestDTO.getDescuento())
+                .codigoBarras(productoCreateRequestDTO.getCodigoBarras())
+                .stockActual(productoCreateRequestDTO.getStockActual())
+                .stockMinimo(productoCreateRequestDTO.getStockMinimo())
+                .stockMaximo(productoCreateRequestDTO.getStockMaximo())
+                .categoria(productoCreateRequestDTO.getCategoria())
+                .fabricante(productoCreateRequestDTO.getFabricante())
+                .proveedor(productoCreateRequestDTO.getProveedor())
+                .estado(productoCreateRequestDTO.getEstado())
+                .sucursal(productoCreateRequestDTO.getSucursal())
+                .condicionProducto(productoCreateRequestDTO.getCondicionProducto())
+                .precio(precio)
+                .ganancia(ganancia)
+                .build();
+
+        productoRepository.save(productoNew);
+
+        return "";
+    }
+    @Override
+    public List<Estado> obtenerEstados() {
+        return Arrays.asList(Estado.values());
+    }
+    @Override
+    public List<Sucursal> obtenerSucursales() {
+        return Arrays.asList(Sucursal.values());
+    }
+    @Override
+    public List<CondicionProducto> obtenerCondicionProducto() {
+        return Arrays.asList(CondicionProducto.values());
     }
 
     private ProductoViewByVentaResponseDTO convertToProducto(Producto producto) {
@@ -102,4 +144,5 @@ public class ProductoServiceImpl implements IProductoService {
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("No se encontro el producto con el id: " + id));
     }
+
 }

@@ -28,6 +28,14 @@ public class VentaController {
         return ResponseEntity.ok(ventaService.realizarVenta(ventaCreateRequestDTO,usuario.getId()));
     }
 
+
+    // TODO : ver requerimiento
+    //  - 1.3 Visualizar ventas totales por sumatoria
+    //  - 1.4 Visualizar ventas
+    @GetMapping("/ventas_totales_by_fecha")
+    public ResponseEntity<?> ventasTotalesPorSumatoria(@RequestBody VentaCreateRequestDTO ventaCreateRequestDTO) {
+        return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
+    }
     @GetMapping("/condiciones_venta")
     public ResponseEntity<?> getCondiciones_venta() {
         return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());

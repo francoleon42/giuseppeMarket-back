@@ -1,4 +1,4 @@
-package com.giuseppemarket.dto;
+package com.giuseppemarket.dto.producto;
 
 import com.giuseppemarket.utils.enums.Estado;
 import lombok.AllArgsConstructor;

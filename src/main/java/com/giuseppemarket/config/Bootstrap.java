@@ -73,6 +73,11 @@ public class Bootstrap implements ApplicationRunner {
                 .sucursal(Sucursal.SUCURSAL_1)
                 .condicionProducto(CondicionProducto.MINORISTA)
                 .build();
+        // TODO : agregar descuento
+        double precio1 = producto1.getCosto()+ ( ( producto1.getCosto() * producto1.getPorcentajeGanancia())/100);
+        double ganancia1 = precio1  -  producto1.getCosto() ;
+        producto1.setPrecio(precio1);
+        producto1.setGanancia(ganancia1);
 
         Producto producto2 = Producto.builder()
                 .nombre("Smartphone Samsung")
@@ -92,6 +97,11 @@ public class Bootstrap implements ApplicationRunner {
                 .sucursal(Sucursal.SUCURSAL_2)
                 .condicionProducto(CondicionProducto.MAYORISTA)
                 .build();
+        // TODO : agregar descuento
+        double precio2 = producto2.getCosto()+ ( ( producto2.getCosto() * producto2.getPorcentajeGanancia())/100);
+        double ganancia2 = precio2  -  producto2.getCosto() ;
+        producto2.setPrecio(precio2);
+        producto2.setGanancia(ganancia2);
 
         Producto producto3 = Producto.builder()
                 .nombre("Monitor LG 24")
@@ -111,6 +121,12 @@ public class Bootstrap implements ApplicationRunner {
                 .sucursal(Sucursal.SUCURSAL_1)
                 .condicionProducto(CondicionProducto.MAYORISTA)
                 .build();
+
+        // TODO : agregar descuento
+        double precio3 = producto3.getCosto()+ ( ( producto3.getCosto() * producto3.getPorcentajeGanancia())/100);
+        double ganancia3 = precio3  -  producto3.getCosto() ;
+        producto3.setPrecio(precio3);
+        producto3.setGanancia(ganancia3);
 
         productoRepository.saveAll(List.of(producto1, producto2, producto3));
 

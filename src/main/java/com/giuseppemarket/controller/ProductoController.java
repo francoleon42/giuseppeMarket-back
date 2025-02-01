@@ -1,5 +1,6 @@
 package com.giuseppemarket.controller;
 
+import com.giuseppemarket.dto.producto.ProductoCreateRequestDTO;
 import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
 import com.giuseppemarket.exception.NotFoundException;
@@ -20,22 +21,41 @@ public class ProductoController {
 
     private final IProductoService productoService;
 
-    //TODO: obtener productus de la sucursal del vendor
     @GetMapping("/sucursal")
     public ResponseEntity<?> getProductosSucursal() {
         Sucursal sucursal = getUserFromToken().getSucursal();
         return ResponseEntity.ok(productoService.obtenerProductosBySucursal(sucursal));
 
     }
-
     @GetMapping("/codigoBarra/{cod}")
     public ResponseEntity<?> getProductoByCodigoBarra(@PathVariable("cod") String codigoBarra) {
         return ResponseEntity.ok(productoService.obtenerProductosByCodigoBarra(codigoBarra));
     }
-
     @GetMapping("/categoria/{categoria}")
     public ResponseEntity<?> getProductosByCategoria(@PathVariable("categoria") String categoria) {
         return ResponseEntity.ok(productoService.obtenerProductosByCategoria(categoria));
+    }
+
+    // Epic 2
+    // ABM de prudctos
+
+    // obtener enums para crear producto
+    @GetMapping("/sucursales")
+    public ResponseEntity<?> getSucursales() {
+        return ResponseEntity.ok(productoService.obtenerSucursales());
+    }
+    @GetMapping("/condiciones_productos")
+    public ResponseEntity<?> getCondicionesProductos() {
+        return ResponseEntity.ok(productoService.obtenerCondicionProducto());
+    }
+    @GetMapping("/estado")
+    public ResponseEntity<?> getestado() {
+        return ResponseEntity.ok(productoService.obtenerEstados());
+    }
+    //crear producto
+    @PostMapping("/crear")
+    public ResponseEntity<?> crear(@RequestBody ProductoCreateRequestDTO productoCreateRequestDTO) {
+        return ResponseEntity.ok(productoService.crear(productoCreateRequestDTO));
     }
 
     private Usuario getUserFromToken() {

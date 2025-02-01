@@ -78,6 +78,9 @@ public class SecurityConfig {
 
     private void configureVendedorEndpoints(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequest) {
         authRequest
+
+                // amb producto
+                .requestMatchers(HttpMethod.POST, "/productos/crear").hasRole(VENDEDOR)
                 // pree venta
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/codigoBarra/{cod}").hasRole(VENDEDOR)

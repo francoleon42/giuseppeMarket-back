@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+
 @Getter
 @Setter
 @Entity
@@ -19,7 +20,7 @@ public class Impuesto {
     private Integer id;
 
     @Column(name = "valor", nullable = false)
-    private Integer valor;
+    private double valor;
 
     @NotNull
     @Column(name = "nombre", nullable = false, length = 100)

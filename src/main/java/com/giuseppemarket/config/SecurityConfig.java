@@ -79,6 +79,7 @@ public class SecurityConfig {
     private void configureVendedorEndpoints(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authRequest) {
         authRequest
 
+                // epic 2
                 // amb producto
                 .requestMatchers(HttpMethod.GET, "/productos/estado").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/sucursales").hasRole(VENDEDOR)
@@ -88,7 +89,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PATCH, "/productos/update/{idProducto}").hasRole(VENDEDOR)
                 //
                 .requestMatchers(HttpMethod.GET, "/productos/deficit_stock").hasRole(VENDEDOR)
-                // pree venta
+                // amb y asignacion impuestos
+                .requestMatchers(HttpMethod.POST, "/impuesto/crear").hasRole(VENDEDOR)
+                // pree venta epic 1
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/codigoBarra/{cod}").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/categoria/{categoria}").hasRole(VENDEDOR)

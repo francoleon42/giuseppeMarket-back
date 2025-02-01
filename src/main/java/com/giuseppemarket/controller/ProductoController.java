@@ -62,8 +62,6 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.update(productoCreateRequestDTO,idProducto));
     }
 
-    //Los usuarios deben tener una pantalla donde muestre
-    // todos los productos con stock actual menor al stock mínimo.
     @GetMapping("/deficit_stock")
     public ResponseEntity<?> obtenerProductoConDeficitStock() {
         return ResponseEntity.ok(productoService.obtenerProductoEnDeficitStock());

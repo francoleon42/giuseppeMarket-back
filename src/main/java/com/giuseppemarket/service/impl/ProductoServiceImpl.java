@@ -103,6 +103,8 @@ public class ProductoServiceImpl implements IProductoService {
 
         return "";
     }
+
+
     @Override
     public List<Estado> obtenerEstados() {
         return Arrays.asList(Estado.values());
@@ -138,6 +140,31 @@ public class ProductoServiceImpl implements IProductoService {
                 .fabricante(producto.getFabricante())
                 .proveedor(producto.getProveedor())
                 .build();
+    }
+
+    @Override
+    public String habilitar(Integer idProducto) {
+        Producto p = obtenerProductoById(idProducto);
+        if(p.getEstado().equals(Estado.INHABILITADO)) {
+            p.setEstado(Estado.HABILITADO);
+            productoRepository.save(p);
+            return "HABILITADO EL PRODUCTO CON EL ID : " + p.getId();
+        }else{
+            throw new RuntimeException("El producto no tiene estado INHABILITADO");
+        }
+    }
+
+    @Override
+    public String inhabilitar(Integer idProducto) {
+        Producto p = obtenerProductoById(idProducto);
+        if(p.getEstado().equals(Estado.HABILITADO)) {
+            p.setEstado(Estado.INHABILITADO);
+            productoRepository.save(p);
+            return "INHABILITADO EL PRODUCTO CON EL ID : " + p.getId();
+        }else{
+            throw new RuntimeException("El producto no tiene estado HABILITADO");
+        }
+
     }
 
     private Producto obtenerProductoById(Integer id) {

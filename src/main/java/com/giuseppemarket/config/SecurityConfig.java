@@ -84,6 +84,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/productos/sucursales").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/condiciones_productos").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.POST, "/productos/crear").hasRole(VENDEDOR)
+
+                .requestMatchers(HttpMethod.PATCH, "/productos/inhabilitar/{idProducto}").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.PATCH, "/productos/habilitar/{idProducto}").hasRole(VENDEDOR)
+
                 // pree venta
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/codigoBarra/{cod}").hasRole(VENDEDOR)

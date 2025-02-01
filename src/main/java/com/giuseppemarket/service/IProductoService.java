@@ -20,4 +20,7 @@ public interface IProductoService {
     List<CondicionProducto> obtenerCondicionProducto();
     String crear(ProductoCreateRequestDTO productoCreateRequestDTO);
 
+    String habilitar(Integer idProducto);
+    String inhabilitar(Integer idProducto);
+
 }

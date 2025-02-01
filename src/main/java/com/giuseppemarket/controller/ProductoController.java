@@ -58,6 +58,15 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.crear(productoCreateRequestDTO));
     }
 
+    @PatchMapping("/inhabilitar/{idProducto}")
+    public ResponseEntity<?> inhabilitar(@PathVariable("idProducto") Integer idProducto) {
+        return ResponseEntity.ok(productoService.inhabilitar(idProducto));
+    }
+    @PatchMapping("/habilitar/{idProducto}")
+    public ResponseEntity<?> habilitar(@PathVariable("idProducto") Integer idProducto) {
+        return ResponseEntity.ok(productoService.habilitar(idProducto));
+    }
+
     private Usuario getUserFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication != null && authentication.isAuthenticated())) {

@@ -62,7 +62,7 @@ public class Bootstrap implements ApplicationRunner {
                 .costo(800.0f)
                 .porcentajeGanancia(20.0)
                 .descuento(0.0)
-                .estado(Estado.HABILITADO)
+                .estado(Estado.INHABILITADO)
                 .codigoBarras("1234567890123")
                 .stockActual(10)
                 .stockMinimo(2)

@@ -49,8 +49,6 @@ public class Producto {
     @Column(name = "descuento")
     private double descuento;
 
-    @Column(name = "estado")
-    private Estado estado;
 
 
     @Column(name = "codigoBarras", length = 50)
@@ -76,6 +74,10 @@ public class Producto {
 
     @Column(name = "proveedor")
     private String proveedor;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private Estado estado;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sucursal", nullable = false)

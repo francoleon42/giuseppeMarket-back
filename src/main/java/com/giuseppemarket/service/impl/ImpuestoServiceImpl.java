@@ -12,6 +12,8 @@ import com.giuseppemarket.service.IImpuestoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ImpuestoServiceImpl implements IImpuestoService {
@@ -83,6 +85,17 @@ public class ImpuestoServiceImpl implements IImpuestoService {
                         .proveedor(producto.getProveedor())
                         .build())
                 .build();
+    }
+
+    @Override
+    public List<ImpuestoResponseDTO> obtenerAllAsignacionesDeProducto(Integer idProducto) {
+        return productoImpuestoRepository.findByProductoId(idProducto).stream()
+                .map(this::convertirProductoImpuesto)
+                .toList();
+    }
+
+    private ImpuestoResponseDTO convertirProductoImpuesto(ProductoImpuesto productoImpuesto) {
+        return ImpuestoResponseDTO.builder().valor(productoImpuesto.getImpuesto().getValor()).nombre(productoImpuesto.getImpuesto().getNombre()).build();
     }
 
 }

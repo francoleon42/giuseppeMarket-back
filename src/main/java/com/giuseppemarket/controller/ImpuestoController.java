@@ -36,5 +36,8 @@ public class ImpuestoController {
         return ResponseEntity.ok(impuestoService.asignar(impuestoAsignacionRequestDTO));
     }
 
-
+    @GetMapping("/impuestos_de_producto/{idProducto}")
+    public ResponseEntity<?> allAsignacionesDeProducto(@PathVariable("idProducto") Integer idProducto) {
+        return ResponseEntity.ok(impuestoService.obtenerAllAsignacionesDeProducto(idProducto));
+    }
 }

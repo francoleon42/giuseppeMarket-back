@@ -5,6 +5,8 @@ import com.giuseppemarket.dto.impuesto.ImpuestoAsignacionResponseDTO;
 import com.giuseppemarket.dto.impuesto.ImpuestoRequestDTO;
 import com.giuseppemarket.dto.impuesto.ImpuestoResponseDTO;
 
+import java.util.List;
+
 public interface IImpuestoService {
 
     ImpuestoResponseDTO crear(ImpuestoRequestDTO impuestoRequestDTO);
@@ -12,4 +14,6 @@ public interface IImpuestoService {
     String remove(Integer id);
 
     ImpuestoAsignacionResponseDTO asignar(ImpuestoAsignacionRequestDTO impuestoAsignacionRequestDTO);
+
+    List<ImpuestoResponseDTO> obtenerAllAsignacionesDeProducto(Integer idProducto);
 }

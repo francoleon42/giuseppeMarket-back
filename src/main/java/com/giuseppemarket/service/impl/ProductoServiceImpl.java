@@ -6,6 +6,8 @@ import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IItemService;
 import com.giuseppemarket.service.IProductoService;
+import com.giuseppemarket.utils.enums.CondicionProducto;
+import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Sucursal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,9 +34,19 @@ public class ProductoServiceImpl implements IProductoService {
     @Override
     public double subtotalDeProductos(List<Integer> idProductos) {
         //TODO: revisar si asi se obtiene el subtotal.
+
         double subtotal = 0.0;
         for (Integer idProducto : idProductos) {
-            subtotal += obtenerProductoById(idProducto).getPrecio();
+            Producto p = obtenerProductoById(idProducto);
+            double costo = p.getCosto(); // lo ingresa el usuarioS
+            double gananciaPorcentaje = p.getPorcentajeGanancia(); // lo ingresa el usuarioS
+            double precio = costo+((costo * gananciaPorcentaje)/100);
+            double ganacia = precio  - costo ;
+            subtotal += precio;
+
+            p.setPrecio(precio);
+            p.setGanancia(ganacia);
+            productoRepository.save(p);
         }
         return subtotal;
     }

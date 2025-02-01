@@ -1,7 +1,7 @@
 package com.giuseppemarket.service.impl;
 
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
-import com.giuseppemarket.dto.producto.ProductoViewByVentaResponseDTO;
+import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.repository.IProductoRepository;
@@ -11,7 +11,9 @@ import com.giuseppemarket.utils.enums.CondicionProducto;
 import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Sucursal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,9 +27,11 @@ public class ProductoServiceImpl implements IProductoService {
     @Override
     public void disminuirStock(Integer idProducto) {
         Producto producto = obtenerProductoById(idProducto);
-        if (producto.getStockMinimo() < producto.getStockActual() - 1) {
+        if (0 <= producto.getStockActual() - 1) {
             producto.setStockActual(producto.getStockActual() - 1);
             itemService.venderItem(producto.getId());
+        }else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock insuficiente para realizar la venta");
         }
         productoRepository.save(producto);
 
@@ -45,21 +49,21 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
-    public List<ProductoViewByVentaResponseDTO> obtenerProductosBySucursal(Sucursal sucursal) {
+    public List<ProductoResponseDTO> obtenerProductosBySucursal(Sucursal sucursal) {
         return productoRepository.findBySucursal(sucursal).stream()
                 .map(this::convertToProducto)
                 .toList();
     }
 
     @Override
-    public List<ProductoViewByVentaResponseDTO> obtenerProductosByCodigoBarra(String codigoBarra) {
+    public List<ProductoResponseDTO> obtenerProductosByCodigoBarra(String codigoBarra) {
         return productoRepository.findByCodigoBarras(codigoBarra).stream()
                 .map(this::convertToProducto)
                 .toList();
     }
 
     @Override
-    public List<ProductoViewByVentaResponseDTO> obtenerProductosByCategoria(String categoria) {
+    public List<ProductoResponseDTO> obtenerProductosByCategoria(String categoria) {
         return productoRepository.findByCategoriaContaining(categoria).stream()
                 .map(this::convertToProducto)
                 .toList();
@@ -134,6 +138,12 @@ public class ProductoServiceImpl implements IProductoService {
         return "PRODUCTO ACTUALIZADO";
     }
 
+    @Override
+    public List<ProductoResponseDTO> obtenerProductoEnDeficitStock() {
+        return productoRepository.findConDeficitStock().stream()
+                .map(this::convertToProducto)
+                .toList();
+    }
 
     @Override
     public List<Estado> obtenerEstados() {
@@ -150,8 +160,8 @@ public class ProductoServiceImpl implements IProductoService {
         return Arrays.asList(CondicionProducto.values());
     }
 
-    private ProductoViewByVentaResponseDTO convertToProducto(Producto producto) {
-        return ProductoViewByVentaResponseDTO.builder()
+    private ProductoResponseDTO convertToProducto(Producto producto) {
+        return ProductoResponseDTO.builder()
                 .id(producto.getId())
                 .categoria(producto.getCategoria())
                 .codigoBarras(producto.getCodigoBarras())

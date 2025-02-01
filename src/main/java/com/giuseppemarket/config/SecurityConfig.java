@@ -86,7 +86,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/productos/crear").hasRole(VENDEDOR)
 
                 .requestMatchers(HttpMethod.PATCH, "/productos/update/{idProducto}").hasRole(VENDEDOR)
-
+                //
+                .requestMatchers(HttpMethod.GET, "/productos/deficit_stock").hasRole(VENDEDOR)
                 // pree venta
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/codigoBarra/{cod}").hasRole(VENDEDOR)

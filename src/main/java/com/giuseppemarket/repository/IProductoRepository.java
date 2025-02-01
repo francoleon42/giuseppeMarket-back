@@ -18,5 +18,7 @@ public interface IProductoRepository extends JpaRepository<Producto, Integer> {
     @Query("SELECT p FROM Producto p WHERE p.categoria LIKE %:categoria%")
     List<Producto> findByCategoriaContaining(@Param("categoria") String categoria);
 
+    @Query("SELECT p FROM Producto p WHERE p.stockActual < p.stockMinimo")
+    List<Producto> findConDeficitStock();
 
 }

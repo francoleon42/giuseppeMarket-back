@@ -2,6 +2,7 @@ package com.giuseppemarket.controller;
 
 
 import com.giuseppemarket.dto.login.LoginRequestDTO;
+import com.giuseppemarket.dto.venta.ProductosVendidosRequestDTO;
 import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
 import com.giuseppemarket.dto.venta.VentasPorFechasRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
@@ -30,11 +31,11 @@ public class VentaController {
     }
 
 
-    // TODO : ver requerimiento
-//   Como administrador quiero ingresar un rango de fechas y ver todos las ventas
-//   que se realizaron en esas fechas , quiero  ver los datos respectivos de la venta
-//   y de todos sus productos.
-    @GetMapping("/historial_ventas_por_fechas")
+    @GetMapping("/visualizar productos vendidos")
+    public ResponseEntity<?> visualizarProductosVendidos(@RequestBody ProductosVendidosRequestDTO productosVendidosRequestDTO) {
+        return ResponseEntity.ok(ventaService.obtenerProductosVendidos(productosVendidosRequestDTO));
+    }
+    @GetMapping("/historial_en_fechas")
     public ResponseEntity<?> historialVentasPorFechas(@RequestBody VentasPorFechasRequestDTO ventasPorFechasRequestDTO) {
         return ResponseEntity.ok(ventaService.historialVentasPorFechas(ventasPorFechasRequestDTO));
     }

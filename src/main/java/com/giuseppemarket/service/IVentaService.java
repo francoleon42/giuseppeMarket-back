@@ -1,9 +1,6 @@
 package com.giuseppemarket.service;
 
-import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
-import com.giuseppemarket.dto.venta.VentaResponseDTO;
-import com.giuseppemarket.dto.venta.VentasPorFechasRequestDTO;
-import com.giuseppemarket.dto.venta.VentasPorFechasResponseDTO;
+import com.giuseppemarket.dto.venta.*;
 import com.giuseppemarket.utils.enums.CondicionVenta;
 
 import java.util.List;
@@ -14,5 +11,7 @@ public interface IVentaService {
 
     List<VentasPorFechasResponseDTO> historialVentasPorFechas(VentasPorFechasRequestDTO ventasPorFechasRequestDTO);
 
+
+    ProductosVendidosResponseDTO obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO);
 
 }

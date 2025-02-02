@@ -1,10 +1,7 @@
 package com.giuseppemarket.service.impl;
 
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
-import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
-import com.giuseppemarket.dto.venta.VentaResponseDTO;
-import com.giuseppemarket.dto.venta.VentasPorFechasRequestDTO;
-import com.giuseppemarket.dto.venta.VentasPorFechasResponseDTO;
+import com.giuseppemarket.dto.venta.*;
 import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Venta;
 import com.giuseppemarket.repository.IVentaRepository;
@@ -44,6 +41,7 @@ public class VentaServiceImpl implements IVentaService {
         ventaRepository.save(venta);
         //afecta a stock y obtiene subtotal y agrega los items de la venta
         for (Integer idProducto : ventaCreateRequestDTO.getIdproductos()) {
+            //TODO : REFACTORIZAR ESTO
             Item item = productoService.disminuirStock(idProducto);
             item.setVenta(venta);
             venta.getItems().add(item);
@@ -119,6 +117,14 @@ public class VentaServiceImpl implements IVentaService {
                     .build());
         }
         return ventasPorFechasResponseDTO;
+    }
+
+
+    // TODO : HACER LOGICA PARA OBTENER TODOS
+    //  LOS PRODUCTOS VENDIDOS EN FECHAS Y LA CANTIDAD DE VENTAS
+    @Override
+    public ProductosVendidosResponseDTO obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO) {
+        return null;
     }
 
     private VentaResponseDTO convertirAVentaResponseDTO(Venta venta) {

@@ -96,7 +96,7 @@ public class ImpuestoServiceImpl implements IImpuestoService {
     }
 
     private ImpuestoResponseDTO convertirProductoImpuesto(ProductoImpuesto productoImpuesto) {
-        return ImpuestoResponseDTO.builder().valor(productoImpuesto.getImpuesto().getValor()).nombre(productoImpuesto.getImpuesto().getNombre()).build();
+        return ImpuestoResponseDTO.builder().id(productoImpuesto.getImpuesto().getId()).valor(productoImpuesto.getImpuesto().getValor()).nombre(productoImpuesto.getImpuesto().getNombre()).build();
     }
 
 }

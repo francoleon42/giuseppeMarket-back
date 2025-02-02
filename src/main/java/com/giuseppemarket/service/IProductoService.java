@@ -16,6 +16,7 @@ public interface IProductoService {
     List<ProductoResponseDTO> obtenerProductosBySucursal(Sucursal sucursal);
     List<ProductoResponseDTO> obtenerProductosByCodigoBarra(String codigoBarra);
     List<ProductoResponseDTO> obtenerProductosByCategoria(String categoria);
+    List<ProductoResponseDTO> obtenerAllProductos();
 
     List<Estado> obtenerEstados();
     List<Sucursal> obtenerSucursales();

@@ -76,7 +76,7 @@ public class ImpuestoServiceImpl implements IImpuestoService {
                 .build();
         productoImpuestoRepository.save(asignacion);
         return ImpuestoAsignacionResponseDTO.builder()
-                .impuesto(ImpuestoResponseDTO.builder().valor(impuesto.getValor()).nombre(impuesto.getNombre()).build())
+                .impuesto(ImpuestoResponseDTO.builder().id(impuesto.getId()).valor(impuesto.getValor()).nombre(impuesto.getNombre()).build())
                 .producto(ProductoBasicResponseDTO.builder()
                         .id(producto.getId())
                         .codigoBarras(producto.getCodigoBarras())

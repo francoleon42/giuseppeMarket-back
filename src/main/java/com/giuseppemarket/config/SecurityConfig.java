@@ -104,6 +104,7 @@ public class SecurityConfig {
                 //
                 // pree venta epic 1
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/productos/obtener_all").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/codigoBarra/{cod}").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/productos/categoria/{categoria}").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/venta/condiciones_venta").hasRole(VENDEDOR)

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImpuestoResponseDTO {
+    Integer id;
     double valor;
     String nombre;
 }

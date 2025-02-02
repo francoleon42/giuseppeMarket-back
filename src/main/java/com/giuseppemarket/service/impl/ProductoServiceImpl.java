@@ -67,10 +67,17 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     public List<ProductoResponseDTO> obtenerProductosByCategoria(String categoria) {
-        return productoRepository.findByCategoriaContaining(categoria).stream()
+        return productoRepository.findByCategoriaIgnoringCase(categoria).stream()
                 .map(this::convertToProducto)
                 .toList();
 
+    }
+
+    @Override
+    public List<ProductoResponseDTO> obtenerAllProductos() {
+        return productoRepository.findAll().stream()
+                .map(this::convertToProducto)
+                .toList();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.giuseppemarket.dto.impuesto;
+package com.giuseppemarket.dto.producto;
 
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductoAsignacionResponseDTO {
+public class ProductoBasicResponseDTO {
 
     Integer id;
     String codigoBarras;

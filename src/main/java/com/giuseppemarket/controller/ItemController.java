@@ -20,7 +20,7 @@ public class ItemController {
         return ResponseEntity.ok(itemService.crear(itemCrearRequestDTO));
     }
 
-    @GetMapping("/ver_item_disponibles_x_producto/{idProducto}")
+    @GetMapping("/ver_disponibles_de_producto/{idProducto}")
     public ResponseEntity<?> obtenerItemsDisponiblesDeProducto(@PathVariable("idProducto") Integer idProducto) {
         return ResponseEntity.ok(itemService.obtenerItemsDisponiblesDeProducto(idProducto));
     }

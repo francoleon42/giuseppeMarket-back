@@ -1,6 +1,7 @@
 package com.giuseppemarket.service.impl;
 
 import com.giuseppemarket.dto.impuesto.*;
+import com.giuseppemarket.dto.producto.ProductoBasicResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Impuesto;
 import com.giuseppemarket.model.Producto;
@@ -76,7 +77,7 @@ public class ImpuestoServiceImpl implements IImpuestoService {
         productoImpuestoRepository.save(asignacion);
         return ImpuestoAsignacionResponseDTO.builder()
                 .impuesto(ImpuestoResponseDTO.builder().valor(impuesto.getValor()).nombre(impuesto.getNombre()).build())
-                .producto(ProductoAsignacionResponseDTO.builder()
+                .producto(ProductoBasicResponseDTO.builder()
                         .id(producto.getId())
                         .codigoBarras(producto.getCodigoBarras())
                         .categoria(producto.getCategoria())

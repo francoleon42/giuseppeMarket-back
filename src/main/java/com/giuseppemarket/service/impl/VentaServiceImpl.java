@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class VentaServiceImpl implements IVentaService {
                 .observaciones(ventaCreateRequestDTO.getObservaciones())
                 .condicionVenta(ventaCreateRequestDTO.getCondicionVenta())
                 .descuento(ventaCreateRequestDTO.getDescuento())
+                .items(new ArrayList<>())
                 .build();
 
         //afecta a stock y obtiene subtotal y agrega los items de la venta

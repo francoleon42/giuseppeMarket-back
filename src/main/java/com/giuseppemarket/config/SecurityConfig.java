@@ -87,7 +87,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/productos/crear").hasRole(VENDEDOR)
 
                 .requestMatchers(HttpMethod.PATCH, "/productos/update/{idProducto}").hasRole(VENDEDOR)
-                //TODO: hacer amb de item
+
+                // Item
+                .requestMatchers(HttpMethod.POST, "/item/crear").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/item/ver_disponibles_de_producto/{idProducto}").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.DELETE, "/item/remove/{idItem}").hasRole(VENDEDOR)
 
                 //
                 .requestMatchers(HttpMethod.GET, "/productos/deficit_stock").hasRole(VENDEDOR)

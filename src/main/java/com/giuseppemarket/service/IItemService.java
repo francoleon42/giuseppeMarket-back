@@ -1,5 +1,10 @@
 package com.giuseppemarket.service;
 
+import com.giuseppemarket.model.Item;
+import com.giuseppemarket.model.Venta;
+
 public interface IItemService {
-    void venderItem(Integer idProducto);
+    Item venderItem(Integer idProducto);
+
+    String crearItem();
 }

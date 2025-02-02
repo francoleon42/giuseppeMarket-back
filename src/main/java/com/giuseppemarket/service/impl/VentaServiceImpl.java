@@ -3,6 +3,7 @@ package com.giuseppemarket.service.impl;
 import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
 import com.giuseppemarket.dto.venta.VentaCreateResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
+import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.model.Usuario;
 import com.giuseppemarket.model.Venta;
@@ -30,24 +31,24 @@ public class VentaServiceImpl implements IVentaService {
 
     @Override
     public VentaCreateResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO,Integer idUsuario) {
-        double subtotal = 0;
-        //afecta a stock y obtiene subtotal
-        for (Integer idProducto : ventaCreateRequestDTO.getIdproductos()){
-            productoService.disminuirStock(idProducto);
-            subtotal = productoService.subtotalDeProductos(ventaCreateRequestDTO.getIdproductos());
-        }
-
-        // genera la venta
-        double total = subtotal - (( subtotal * ventaCreateRequestDTO.getDescuento())/100);
+        //crear venta
         Venta venta = Venta.builder()
                 .fechaHora(Instant.now())
                 .observaciones(ventaCreateRequestDTO.getObservaciones())
                 .condicionVenta(ventaCreateRequestDTO.getCondicionVenta())
-                .subtotal(subtotal)
                 .descuento(ventaCreateRequestDTO.getDescuento())
-                .total(total)
                 .build();
 
+        //afecta a stock y obtiene subtotal y agrega los items de la venta
+        for (Integer idProducto : ventaCreateRequestDTO.getIdproductos()){
+            Item item = productoService.disminuirStock(idProducto);
+            item.setVenta(venta);
+            venta.getItems().add(item);
+        }
+        double subtotal = productoService.subtotalDeProductos(ventaCreateRequestDTO.getIdproductos());
+        double total = subtotal - (( subtotal * ventaCreateRequestDTO.getDescuento())/100);
+        venta.setSubtotal(subtotal);
+        venta.setTotal(total);
         ventaRepository.save(venta);
 
         // aafecta a la caja

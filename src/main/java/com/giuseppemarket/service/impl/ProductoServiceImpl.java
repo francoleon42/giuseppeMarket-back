@@ -3,7 +3,9 @@ package com.giuseppemarket.service.impl;
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
+import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Producto;
+import com.giuseppemarket.model.Venta;
 import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IItemService;
 import com.giuseppemarket.service.IProductoService;
@@ -25,15 +27,16 @@ public class ProductoServiceImpl implements IProductoService {
     private final IItemService itemService;
 
     @Override
-    public void disminuirStock(Integer idProducto) {
+    public Item disminuirStock(Integer idProducto) {
         Producto producto = obtenerProductoById(idProducto);
         if (0 <= producto.getStockActual() - 1) {
             producto.setStockActual(producto.getStockActual() - 1);
-            itemService.venderItem(producto.getId());
+            Item item = itemService.venderItem(producto.getId());
+            productoRepository.save(producto);
+            return item;
         }else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock insuficiente para realizar la venta");
         }
-        productoRepository.save(producto);
 
     }
 

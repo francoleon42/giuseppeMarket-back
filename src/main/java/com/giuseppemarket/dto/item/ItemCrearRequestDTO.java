@@ -21,12 +21,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemCrearRequestDTO {
-    private Integer id;
-    private LocalDate vencimiento;
-    private LocalDate elaboracion;
-    private LocalDate fechaVenta;
-    private Integer numeroLote;
-    private Venta venta;
-
-
+    LocalDate vencimiento;
+    LocalDate elaboracion;
+    Integer numeroLote;
+    Integer idProducto;
 }

@@ -26,6 +26,9 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.obtenerProductosBySucursal(sucursal));
 
     }
+
+    //TODO : HACER UNO QUE TE TRAIGA TODOS.
+    // TODO: AGREGAR CONDICION AL REPOSITORIO PARA QUE TRAIGAN SOLO SI TAMBIEN ESTAN HABILITADOS
     @GetMapping("/codigoBarra/{cod}")
     public ResponseEntity<?> getProductoByCodigoBarra(@PathVariable("cod") String codigoBarra) {
         return ResponseEntity.ok(productoService.obtenerProductosByCodigoBarra(codigoBarra));
@@ -34,6 +37,7 @@ public class ProductoController {
     public ResponseEntity<?> getProductosByCategoria(@PathVariable("categoria") String categoria) {
         return ResponseEntity.ok(productoService.obtenerProductosByCategoria(categoria));
     }
+
 
     // Epic 2
     // ABM de pruductos
@@ -58,7 +62,7 @@ public class ProductoController {
     }
 
     @PatchMapping("/update/{idProducto}")
-    public ResponseEntity<?> inhabilitar(@RequestBody ProductoRequestDTO productoCreateRequestDTO,@PathVariable("idProducto") Integer idProducto) {
+    public ResponseEntity<?> update(@RequestBody ProductoRequestDTO productoCreateRequestDTO,@PathVariable("idProducto") Integer idProducto) {
         return ResponseEntity.ok(productoService.update(productoCreateRequestDTO,idProducto));
     }
 

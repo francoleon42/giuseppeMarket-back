@@ -42,7 +42,6 @@ public class VentaServiceImpl implements IVentaService {
         //afecta a stock y obtiene subtotal y agrega los items de la venta
         for (Integer idProducto : ventaCreateRequestDTO.getIdproductos()){
             Item item = productoService.disminuirStock(idProducto);
-            item.setVenta(venta);
             venta.getItems().add(item);
         }
         double subtotal = productoService.subtotalDeProductos(ventaCreateRequestDTO.getIdproductos());

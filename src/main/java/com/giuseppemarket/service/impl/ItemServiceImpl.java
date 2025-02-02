@@ -1,5 +1,6 @@
 package com.giuseppemarket.service.impl;
 
+import com.giuseppemarket.dto.item.ItemCrearRequestDTO;
 import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Venta;
 import com.giuseppemarket.repository.IItemRepository;
@@ -23,9 +24,23 @@ public class ItemServiceImpl implements IItemService {
     }
 
     @Override
-    public String crearItem() {
+    public String crear(ItemCrearRequestDTO itemCrearRequestDTO) {
+        Item itemNew = Item.builder()
+                .build();
+        itemRepository.save(itemNew);
+        return "SE CREO EL ITEM:" + itemNew.getId();
+    }
+
+    @Override
+    public String obtenerItemsDisponiblesDeProducto(Integer idProducto) {
         return "";
     }
+
+    @Override
+    public String remove(Integer idItem) {
+        return "";
+    }
+
 
 
 }

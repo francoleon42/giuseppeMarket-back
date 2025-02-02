@@ -3,6 +3,7 @@ package com.giuseppemarket.service.impl;
 import com.giuseppemarket.dto.item.ItemCrearRequestDTO;
 import com.giuseppemarket.dto.item.ItemViewResponseDTO;
 import com.giuseppemarket.dto.producto.ProductoBasicResponseDTO;
+import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Producto;

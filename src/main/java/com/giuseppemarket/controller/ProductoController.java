@@ -27,8 +27,6 @@ public class ProductoController {
 
     }
 
-    //TODO : HACER UNO QUE TE TRAIGA TODOS.
-    // TODO: AGREGAR CONDICION AL REPOSITORIO PARA QUE TRAIGAN SOLO SI TAMBIEN ESTAN HABILITADOS
     @GetMapping("/obtener_all")
     public ResponseEntity<?> obtenerAll() {
         return ResponseEntity.ok(productoService.obtenerAllProductos());

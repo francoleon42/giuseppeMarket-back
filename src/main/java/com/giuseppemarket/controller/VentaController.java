@@ -3,6 +3,7 @@ package com.giuseppemarket.controller;
 
 import com.giuseppemarket.dto.login.LoginRequestDTO;
 import com.giuseppemarket.dto.venta.VentaCreateRequestDTO;
+import com.giuseppemarket.dto.venta.VentasPorFechasRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Usuario;
@@ -25,19 +26,27 @@ public class VentaController {
     @PostMapping("/crear")
     public ResponseEntity<?> crear(@RequestBody VentaCreateRequestDTO ventaCreateRequestDTO) {
         Usuario usuario = getUserFromToken();
-        return ResponseEntity.ok(ventaService.realizarVenta(ventaCreateRequestDTO,usuario.getId()));
+        return ResponseEntity.ok(ventaService.realizarVenta(ventaCreateRequestDTO, usuario.getId()));
     }
 
 
     // TODO : ver requerimiento
-    //  - 1.3 Visualizar ventas totales por sumatoria
-    //  - 1.4 Visualizar ventas
-    @GetMapping("/ventas_totales_by_fecha")
-    public ResponseEntity<?> ventasTotalesPorSumatoria(@RequestBody VentaCreateRequestDTO ventaCreateRequestDTO) {
-        return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
+//   Como administrador quiero ingresar un rango de fechas y ver todos las ventas
+//   que se realizaron en esas fechas , quiero  ver los datos respectivos de la venta
+//   y de todos sus productos.
+    @GetMapping("/historial_ventas_por_fechas")
+    public ResponseEntity<?> historialVentasPorFechas(@RequestBody VentasPorFechasRequestDTO ventasPorFechasRequestDTO) {
+        return ResponseEntity.ok(ventaService.historialVentasPorFechas(ventasPorFechasRequestDTO));
     }
+
+    //
     @GetMapping("/condiciones_venta")
     public ResponseEntity<?> getCondiciones_venta() {
+        return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
+    }
+
+    @GetMapping("/ventas_totales_by_fecha")
+    public ResponseEntity<?> ventasTotalesPorSumatoria(@RequestBody VentaCreateRequestDTO ventaCreateRequestDTO) {
         return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
     }
 

@@ -1,7 +1,5 @@
 package com.giuseppemarket.dto.venta;
 
-import com.giuseppemarket.dto.item.ItemViewResponseDTO;
-import com.giuseppemarket.dto.producto.ProductoBasicResponseDTO;
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VentasPorFechasResponseDTO {
+public class VentaHistorialResponseDTO {
     VentaResponseDTO ventaResponseDTO;
     List<ProductoResponseDTO> productosResponseDTO;
 }

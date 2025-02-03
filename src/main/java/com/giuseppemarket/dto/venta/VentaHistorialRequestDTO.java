@@ -6,14 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class VentasPorFechasRequestDTO {
+public class VentaHistorialRequestDTO {
     Instant fechaDesde;
     Instant fechaHasta;
 }

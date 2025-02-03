@@ -12,13 +12,13 @@ import com.giuseppemarket.service.IItemService;
 import com.giuseppemarket.service.IProductoService;
 import com.giuseppemarket.service.IVentaService;
 import com.giuseppemarket.utils.enums.CondicionVenta;
-import com.giuseppemarket.utils.enums.Estado;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.*;
 
 @Service
@@ -89,51 +89,17 @@ private void validarStockDisponible(List<Integer> idsProductos){
     }
 
     @Override
-    public List<VentasPorFechasResponseDTO> historialVentasPorFechas(VentasPorFechasRequestDTO ventasPorFechasRequestDTO) {
-        List<Venta> ventas = ventaRepository.findByFechaHoraBetween(ventasPorFechasRequestDTO.getFechaDesde(), ventasPorFechasRequestDTO.getFechaHasta());
-        List<VentasPorFechasResponseDTO> ventasPorFechasResponseDTO = new ArrayList<>();
-        for (Venta venta : ventas) {
-            VentaResponseDTO ventaResponseDTO = VentaResponseDTO.builder().build();
-            ventaResponseDTO.setComprobante(venta.getComprobante());
-            ventaResponseDTO.setFechaHora(venta.getFechaHora());
-            ventaResponseDTO.setObservaciones(venta.getObservaciones());
-            ventaResponseDTO.setSubtotal(venta.getSubtotal());
-            ventaResponseDTO.setDescuento(venta.getDescuento());
-            ventaResponseDTO.setTotal(venta.getTotal());
-            ventaResponseDTO.setCondicionVenta(venta.getCondicionVenta().toString());
-            List<ProductoResponseDTO> productosResponseDTO = new ArrayList<>();
-            for (Item item : venta.getItems()) {
-                ProductoResponseDTO productoResponseDTO = ProductoResponseDTO.builder()
-                        .id(item.getProducto().getId())
-                        .nombre(item.getProducto().getNombre())
-                        .marca(item.getProducto().getMarca())
-                        .descripcion(item.getProducto().getDescripcion())
-                        .costo(item.getProducto().getCosto())
-                        .categoria(item.getProducto().getCategoria())
-                        .sucursal(item.getProducto().getSucursal().toString())
-                        .codigoBarras(item.getProducto().getCodigoBarras())
-                        .condicionProducto(item.getProducto().getCondicionProducto().toString())
-                        .stockActual(item.getProducto().getStockActual())
-                        .stockMinimo(item.getProducto().getStockMinimo())
-                        .stockMaximo(item.getProducto().getStockMaximo())
-                        .porcentajeGanancia(item.getProducto().getPorcentajeGanancia())
-                        .ganancia(item.getProducto().getGanancia())
-                        .precio(item.getProducto().getPrecio())
-                        .descuento(item.getProducto().getPrecio())
-                        .estado(item.getProducto().getEstado())
-                        .fabricante(item.getProducto().getFabricante())
-                        .proveedor(item.getProducto().getProveedor())
-                        .build();
-                productosResponseDTO.add(productoResponseDTO);
-            }
-            ventasPorFechasResponseDTO.add(VentasPorFechasResponseDTO.builder()
-                    .ventaResponseDTO(ventaResponseDTO)
-                    .productosResponseDTO(productosResponseDTO)
-                    .build());
-        }
-        return ventasPorFechasResponseDTO;
+    public List<VentaHistorialResponseDTO> historialVentasPorFechas(VentaHistorialRequestDTO ventaHistorialRequestDTO) {
+        List<Venta> ventas = ventaRepository.findByFechaHoraBetween(ventaHistorialRequestDTO.getFechaDesde(), ventaHistorialRequestDTO.getFechaHasta());
+        return obtenerHistorialDeVenta(ventas);
     }
-
+    @Override
+    public List<VentaHistorialResponseDTO> obtenerVentasDeFecha(VentaPorFechaRequestDTO ventaPorFechaRequestDTO) {
+        Instant fechaInicio = ventaPorFechaRequestDTO.getFecha().atStartOfDay().toInstant(ZoneOffset.UTC);  // Inicio del día (00:00)
+        Instant fechaFin =  ventaPorFechaRequestDTO.getFecha().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);  // Fin del día (23:59:59)
+        List<Venta> ventas = ventaRepository.findByFechaHoraBetween(fechaInicio, fechaFin);
+        return obtenerHistorialDeVenta(ventas);
+    }
 
     @Override
     public List<ProductosVendidosResponseDTO> obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO) {
@@ -181,6 +147,53 @@ private void validarStockDisponible(List<Integer> idsProductos){
         return new ArrayList<>(productosVendidosMap.values());
     }
 
+
+
+    private List<VentaHistorialResponseDTO> obtenerHistorialDeVenta(List<Venta> ventas){
+        List<VentaHistorialResponseDTO> ventaHistorialResponseDTO = new ArrayList<>();
+        for (Venta venta : ventas) {
+            VentaResponseDTO ventaResponseDTO = VentaResponseDTO.builder().build();
+            ventaResponseDTO.setComprobante(venta.getComprobante());
+            ventaResponseDTO.setFechaHora(venta.getFechaHora());
+            ventaResponseDTO.setObservaciones(venta.getObservaciones());
+            ventaResponseDTO.setSubtotal(venta.getSubtotal());
+            ventaResponseDTO.setDescuento(venta.getDescuento());
+            ventaResponseDTO.setTotal(venta.getTotal());
+            ventaResponseDTO.setCondicionVenta(venta.getCondicionVenta().toString());
+            List<ProductoResponseDTO> productosResponseDTO = new ArrayList<>();
+            for (Item item : venta.getItems()) {
+                ProductoResponseDTO productoResponseDTO = ProductoResponseDTO.builder()
+                        .id(item.getProducto().getId())
+                        .nombre(item.getProducto().getNombre())
+                        .marca(item.getProducto().getMarca())
+                        .descripcion(item.getProducto().getDescripcion())
+                        .costo(item.getProducto().getCosto())
+                        .categoria(item.getProducto().getCategoria())
+                        .sucursal(item.getProducto().getSucursal().toString())
+                        .codigoBarras(item.getProducto().getCodigoBarras())
+                        .condicionProducto(item.getProducto().getCondicionProducto().toString())
+                        .stockActual(item.getProducto().getStockActual())
+                        .stockMinimo(item.getProducto().getStockMinimo())
+                        .stockMaximo(item.getProducto().getStockMaximo())
+                        .porcentajeGanancia(item.getProducto().getPorcentajeGanancia())
+                        .ganancia(item.getProducto().getGanancia())
+                        .precio(item.getProducto().getPrecio())
+                        .descuento(item.getProducto().getPrecio())
+                        .estado(item.getProducto().getEstado())
+                        .fabricante(item.getProducto().getFabricante())
+                        .proveedor(item.getProducto().getProveedor())
+                        .build();
+                productosResponseDTO.add(productoResponseDTO);
+            }
+            ventaHistorialResponseDTO.add(VentaHistorialResponseDTO.builder()
+                    .ventaResponseDTO(ventaResponseDTO)
+                    .productosResponseDTO(productosResponseDTO)
+                    .build());
+        }
+        return ventaHistorialResponseDTO;
+
+
+    }
     private VentaResponseDTO convertirAVentaResponseDTO(Venta venta) {
         return VentaResponseDTO.builder().build();
     }

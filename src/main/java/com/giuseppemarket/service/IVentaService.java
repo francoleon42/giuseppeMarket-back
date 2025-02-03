@@ -9,9 +9,9 @@ public interface IVentaService {
     VentaResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO, Integer idUsuario);
     List<CondicionVenta> obtenerCondicionesVenta();
 
-    List<VentasPorFechasResponseDTO> historialVentasPorFechas(VentasPorFechasRequestDTO ventasPorFechasRequestDTO);
+    List<VentaHistorialResponseDTO> historialVentasPorFechas(VentaHistorialRequestDTO ventaHistorialRequestDTO);
 
 
     List<ProductosVendidosResponseDTO> obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO);
-
+    List<VentaHistorialResponseDTO> obtenerVentasDeFecha(VentaPorFechaRequestDTO ventaPorFechaRequestDTO);
 }

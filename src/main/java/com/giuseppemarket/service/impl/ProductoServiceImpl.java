@@ -6,8 +6,6 @@ import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Producto;
-import com.giuseppemarket.model.ProductoImpuesto;
-import com.giuseppemarket.model.Venta;
 import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IItemService;
 import com.giuseppemarket.service.IProductoService;
@@ -59,6 +57,8 @@ public class ProductoServiceImpl implements IProductoService {
                 .map(this::convertToProducto)
                 .toList();
     }
+
+
 
     @Override
     public List<ProductoResponseDTO> obtenerProductosByCodigoBarra(String codigoBarra) {

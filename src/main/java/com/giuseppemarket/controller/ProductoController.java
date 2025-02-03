@@ -1,5 +1,6 @@
 package com.giuseppemarket.controller;
 
+import com.giuseppemarket.dto.producto.ProductoPorSucursalRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
 import com.giuseppemarket.exception.NotFoundException;
@@ -20,12 +21,6 @@ public class ProductoController {
 
     private final IProductoService productoService;
 
-    @GetMapping("/sucursal")
-    public ResponseEntity<?> getProductosSucursal() {
-        Sucursal sucursal = getUserFromToken().getSucursal();
-        return ResponseEntity.ok(productoService.obtenerProductosBySucursal(sucursal));
-
-    }
 
     @GetMapping("/obtener_all")
     public ResponseEntity<?> obtenerAll() {
@@ -67,6 +62,19 @@ public class ProductoController {
     @PatchMapping("/update/{idProducto}")
     public ResponseEntity<?> update(@RequestBody ProductoRequestDTO productoCreateRequestDTO,@PathVariable("idProducto") Integer idProducto) {
         return ResponseEntity.ok(productoService.update(productoCreateRequestDTO,idProducto));
+    }
+
+    @GetMapping("/por_usuario")
+    public ResponseEntity<?> getProductosSucursalDeVendedor() {
+        Sucursal sucursal = getUserFromToken().getSucursal();
+        return ResponseEntity.ok(productoService.obtenerProductosBySucursal(sucursal));
+
+    }
+    @GetMapping("/obtener_productos_de_sucursal")
+    public ResponseEntity<?> getProductosBySucursales(@RequestBody ProductoPorSucursalRequestDTO productoPorSucursalRequestDTO) {
+        Sucursal sucursal = productoPorSucursalRequestDTO.getSucursal();
+        return ResponseEntity.ok(productoService.obtenerProductosBySucursal(sucursal));
+
     }
 
     @GetMapping("/deficit_stock")

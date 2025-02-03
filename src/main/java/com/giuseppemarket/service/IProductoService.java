@@ -4,7 +4,6 @@ import com.giuseppemarket.dto.producto.ProductoBasicResponseDTO;
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.model.Item;
-import com.giuseppemarket.model.Venta;
 import com.giuseppemarket.utils.enums.CondicionProducto;
 import com.giuseppemarket.utils.enums.Estado;
 import com.giuseppemarket.utils.enums.Sucursal;
@@ -15,6 +14,7 @@ public interface IProductoService {
     Item disminuirStock(Integer idProducto);
     double subtotalDeProductos(List<Integer> idProductos);
     List<ProductoResponseDTO> obtenerProductosBySucursal(Sucursal sucursal);
+
     List<ProductoResponseDTO> obtenerProductosByCodigoBarra(String codigoBarra);
     List<ProductoResponseDTO> obtenerProductosByCategoria(String categoria);
     List<ProductoResponseDTO> obtenerAllProductos();

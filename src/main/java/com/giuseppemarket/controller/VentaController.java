@@ -24,12 +24,17 @@ public class VentaController {
 
     private final IVentaService ventaService;
 
+
+    //
+    @GetMapping("/condiciones_venta")
+    public ResponseEntity<?> getCondiciones_venta() {
+        return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
+    }
     @PostMapping("/crear")
     public ResponseEntity<?> crear(@RequestBody VentaCreateRequestDTO ventaCreateRequestDTO) {
         Usuario usuario = getUserFromToken();
         return ResponseEntity.ok(ventaService.realizarVenta(ventaCreateRequestDTO, usuario.getId()));
     }
-
 
     @GetMapping("/visualizar_productos_vendidos")
     public ResponseEntity<?> visualizarProductosVendidos(@RequestBody ProductosVendidosRequestDTO productosVendidosRequestDTO) {
@@ -40,16 +45,8 @@ public class VentaController {
         return ResponseEntity.ok(ventaService.historialVentasPorFechas(ventasPorFechasRequestDTO));
     }
 
-    //
-    @GetMapping("/condiciones_venta")
-    public ResponseEntity<?> getCondiciones_venta() {
-        return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
-    }
 
-    @GetMapping("/ventas_totales_by_fecha")
-    public ResponseEntity<?> ventasTotalesPorSumatoria(@RequestBody VentaCreateRequestDTO ventaCreateRequestDTO) {
-        return ResponseEntity.ok(ventaService.obtenerCondicionesVenta());
-    }
+
 
     private Usuario getUserFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

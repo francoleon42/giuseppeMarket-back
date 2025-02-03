@@ -112,7 +112,7 @@ public class SecurityConfig {
                 //venta
                 .requestMatchers(HttpMethod.POST, "/venta/crear").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/venta/historial_en_fechas").hasRole(ADMINISTRADOR)
-                .requestMatchers(HttpMethod.GET, "/venta/visualizar productos vendidos").hasRole(ADMINISTRADOR);
+                .requestMatchers(HttpMethod.GET, "/venta/visualizar_productos_vendidos").hasRole(ADMINISTRADOR);
 
 
     }

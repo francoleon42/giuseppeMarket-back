@@ -31,7 +31,7 @@ public class VentaController {
     }
 
 
-    @GetMapping("/visualizar productos vendidos")
+    @GetMapping("/visualizar_productos_vendidos")
     public ResponseEntity<?> visualizarProductosVendidos(@RequestBody ProductosVendidosRequestDTO productosVendidosRequestDTO) {
         return ResponseEntity.ok(ventaService.obtenerProductosVendidos(productosVendidosRequestDTO));
     }

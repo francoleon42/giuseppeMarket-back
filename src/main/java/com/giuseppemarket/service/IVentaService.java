@@ -12,6 +12,6 @@ public interface IVentaService {
     List<VentasPorFechasResponseDTO> historialVentasPorFechas(VentasPorFechasRequestDTO ventasPorFechasRequestDTO);
 
 
-    ProductosVendidosResponseDTO obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO);
+    List<ProductosVendidosResponseDTO> obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO);
 
 }

@@ -15,9 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -123,10 +121,50 @@ public class VentaServiceImpl implements IVentaService {
     // TODO : HACER LOGICA PARA OBTENER TODOS
     //  LOS PRODUCTOS VENDIDOS EN FECHAS Y LA CANTIDAD DE VENTAS
     @Override
-    public ProductosVendidosResponseDTO obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO) {
-        return null;
-    }
+    public List<ProductosVendidosResponseDTO> obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO) {
+        List<Venta> ventas = ventaRepository.findByFechaHoraBetween(
+                productosVendidosRequestDTO.getFechaDesde(),
+                productosVendidosRequestDTO.getFechaHasta()
+        );
 
+        Map<Integer, ProductosVendidosResponseDTO> productosVendidosMap = new HashMap<>();
+
+        for (Venta venta : ventas) {
+            for (Item item : venta.getItems()) {
+                Integer productoId = item.getProducto().getId();
+                productosVendidosMap.putIfAbsent(productoId, ProductosVendidosResponseDTO.builder()
+                        .productoResponseDTO(
+                                ProductoResponseDTO.builder()
+                                        .id(productoId)
+                                        .nombre(item.getProducto().getNombre())
+                                        .marca(item.getProducto().getMarca())
+                                        .descripcion(item.getProducto().getDescripcion())
+                                        .costo(item.getProducto().getCosto())
+                                        .categoria(item.getProducto().getCategoria())
+                                        .sucursal(item.getProducto().getSucursal().toString())
+                                        .codigoBarras(item.getProducto().getCodigoBarras())
+                                        .condicionProducto(item.getProducto().getCondicionProducto().toString())
+                                        .stockActual(item.getProducto().getStockActual())
+                                        .stockMinimo(item.getProducto().getStockMinimo())
+                                        .stockMaximo(item.getProducto().getStockMaximo())
+                                        .porcentajeGanancia(item.getProducto().getPorcentajeGanancia())
+                                        .ganancia(item.getProducto().getGanancia())
+                                        .precio(item.getProducto().getPrecio())
+                                        .descuento(item.getProducto().getDescuento())
+                                        .estado(item.getProducto().getEstado())
+                                        .fabricante(item.getProducto().getFabricante())
+                                        .proveedor(item.getProducto().getProveedor())
+                                        .build())
+                        .cantidadDeVentas(0)
+                        .build());
+
+                // Sumar la cantidad vendida
+                ProductosVendidosResponseDTO productosVendidosResponseDTO = productosVendidosMap.get(productoId);
+                productosVendidosResponseDTO.setCantidadDeVentas(productosVendidosResponseDTO.getCantidadDeVentas() + 1);
+            }
+        }
+        return new ArrayList<>(productosVendidosMap.values());
+    }
     private VentaResponseDTO convertirAVentaResponseDTO(Venta venta) {
         return VentaResponseDTO.builder().build();
     }

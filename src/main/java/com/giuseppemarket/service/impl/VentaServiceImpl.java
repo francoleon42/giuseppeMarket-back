@@ -43,6 +43,7 @@ private void validarStockDisponible(List<Integer> idsProductos){
 }
     @Override
     public VentaResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO, Integer idUsuario) {
+        validarStockDisponible(ventaCreateRequestDTO.getIdproductos());
         //crear venta
         Venta venta = Venta.builder()
                 .fechaHora(Instant.now())
@@ -53,8 +54,6 @@ private void validarStockDisponible(List<Integer> idsProductos){
                 .build();
         ventaRepository.save(venta);
 
-
-        validarStockDisponible(ventaCreateRequestDTO.getIdproductos());
         for (Integer idProducto : ventaCreateRequestDTO.getIdproductos()) {
             Item item = productoService.disminuirStock(idProducto);
             item.setVenta(venta);

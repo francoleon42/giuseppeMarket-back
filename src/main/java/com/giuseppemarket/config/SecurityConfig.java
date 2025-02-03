@@ -95,6 +95,8 @@ public class SecurityConfig {
 
                 //control
                 .requestMatchers(HttpMethod.GET, "/productos/deficit_stock").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/productos/mayorista").hasAnyRole(VENDEDOR,ADMINISTRADOR)
+                .requestMatchers(HttpMethod.GET, "/productos/minorista").hasAnyRole(VENDEDOR,ADMINISTRADOR)
                 .requestMatchers(HttpMethod.GET, "/item/vencido_hoy").hasAnyRole(VENDEDOR,ADMINISTRADOR)
                 .requestMatchers(HttpMethod.GET, "/item/ver_por_lote/{numeroLote}").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/item/obtener_all_lotes").hasRole(VENDEDOR)
@@ -119,7 +121,8 @@ public class SecurityConfig {
                 //venta
                 .requestMatchers(HttpMethod.POST, "/venta/crear").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/venta/historial_en_fechas").hasRole(ADMINISTRADOR)
-                .requestMatchers(HttpMethod.GET, "/venta/visualizar_productos_vendidos").hasRole(ADMINISTRADOR);
+                .requestMatchers(HttpMethod.GET, "/venta/visualizar_productos_vendidos").hasRole(ADMINISTRADOR)
+                .requestMatchers(HttpMethod.GET, "/venta/ver_ventas_de_fecha").hasRole(VENDEDOR);
 
 
     }

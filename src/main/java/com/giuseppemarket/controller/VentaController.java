@@ -44,6 +44,13 @@ public class VentaController {
     public ResponseEntity<?> historialVentasPorFechas(@RequestBody VentasPorFechasRequestDTO ventasPorFechasRequestDTO) {
         return ResponseEntity.ok(ventaService.historialVentasPorFechas(ventasPorFechasRequestDTO));
     }
+    @GetMapping("/ver_ventas_de_fecha")
+    public ResponseEntity<?> obtenrVentasDeFecha(@RequestBody VentasPorFechasRequestDTO ventasPorFechasRequestDTO) {
+        return ResponseEntity.ok(ventaService.historialVentasPorFechas(ventasPorFechasRequestDTO));
+    }
+
+
+
 
 
 

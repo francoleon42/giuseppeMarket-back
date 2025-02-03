@@ -83,6 +83,20 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
+    public List<ProductoResponseDTO> obtenerProductosMinorista() {
+        return productoRepository.findByCondicionProducto(CondicionProducto.MINORISTA).stream()
+                .map(this::convertToProducto)
+                .toList();
+    }
+
+    @Override
+    public List<ProductoResponseDTO> obtenerProductosMayorista() {
+        return productoRepository.findByCondicionProducto(CondicionProducto.MAYORISTA).stream()
+                .map(this::convertToProducto)
+                .toList();
+    }
+
+    @Override
     public ProductoBasicResponseDTO crear(ProductoRequestDTO productoRequestDTO) {
 
         double costo = productoRequestDTO.getCosto();

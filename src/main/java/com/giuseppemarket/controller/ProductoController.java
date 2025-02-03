@@ -76,6 +76,15 @@ public class ProductoController {
         return ResponseEntity.ok(productoService.obtenerProductosBySucursal(sucursal));
 
     }
+    @GetMapping("/minorista")
+    public ResponseEntity<?> obtenerProductosMinorista() {
+        return ResponseEntity.ok(productoService.obtenerProductosMinorista());
+    }
+    @GetMapping("/mayorista")
+    public ResponseEntity<?> obtenerProductosMayorista() {
+        return ResponseEntity.ok(productoService.obtenerProductosMayorista());
+    }
+
 
     @GetMapping("/deficit_stock")
     public ResponseEntity<?> obtenerProductoConDeficitStock() {

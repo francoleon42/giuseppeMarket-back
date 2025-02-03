@@ -29,6 +29,7 @@ public class ItemServiceImpl implements IItemService {
 
     @Override
     public Item venderItem(Integer idProduc) {
+        //TODO : REVISAR SI SE QUIERE VENDER PRODUCTOS VENCIDOS
         Item itemMasViejoSinVender = itemRepository.findItemMasViejoSinVender(idProduc);
         itemMasViejoSinVender.setFechaVenta(LocalDate.now());
         itemRepository.save(itemMasViejoSinVender);
@@ -62,6 +63,24 @@ public class ItemServiceImpl implements IItemService {
                 .map(this::convertAITemViewResponseDTO)
                 .toList();
     }
+
+
+    @Override
+    public String remove(Integer idItem) {
+        Item item = itemRepository.findById(idItem).orElseThrow(() -> new NotFoundException("No se encontro el item a borrar , el id: " + idItem));
+        itemRepository.delete(item);
+        return "SE ELIMINA EL ITEM:" + item.getId();
+    }
+
+    @Override
+    public List<ItemViewResponseDTO> vencidosHoy() {
+        return itemRepository.findByVencimientoLessThanEqual(LocalDate.now()).stream()
+                .map(this::convertAITemViewResponseDTO)
+                .toList();
+
+    }
+
+
     private ItemViewResponseDTO convertAITemViewResponseDTO(Item item) {
         return ItemViewResponseDTO.builder()
                 .id(item.getId())
@@ -79,14 +98,5 @@ public class ItemServiceImpl implements IItemService {
                         .build())
                 .build();
     }
-
-    @Override
-    public String remove(Integer idItem) {
-        Item item = itemRepository.findById(idItem).orElseThrow(() -> new NotFoundException("No se encontro el item a borrar , el id: " + idItem));
-        itemRepository.delete(item);
-        return "SE ELIMINA EL ITEM:" + item.getId();
-    }
-
-
 
 }

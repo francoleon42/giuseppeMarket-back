@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IItemRepository extends JpaRepository<Item, Integer> {
@@ -14,4 +15,7 @@ public interface IItemRepository extends JpaRepository<Item, Integer> {
     Item findItemMasViejoSinVender(@Param("idProducto") Integer idProducto);
 
     List<Item> findByProductoIdAndFechaVentaIsNull(Integer idProducto);
+
+    List<Item> findByVencimientoLessThanEqual(LocalDate fecha);
+
 }

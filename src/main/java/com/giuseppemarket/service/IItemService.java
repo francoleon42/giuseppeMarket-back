@@ -15,4 +15,6 @@ public interface IItemService {
     List<ItemViewResponseDTO> obtenerItemsDisponiblesDeProducto(Integer idProducto);
     String remove(Integer idItem);
 
+    List<ItemViewResponseDTO> vencidosHoy();
+
 }

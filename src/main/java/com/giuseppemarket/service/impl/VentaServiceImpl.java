@@ -118,8 +118,6 @@ public class VentaServiceImpl implements IVentaService {
     }
 
 
-    // TODO : HACER LOGICA PARA OBTENER TODOS
-    //  LOS PRODUCTOS VENDIDOS EN FECHAS Y LA CANTIDAD DE VENTAS
     @Override
     public List<ProductosVendidosResponseDTO> obtenerProductosVendidos(ProductosVendidosRequestDTO productosVendidosRequestDTO) {
         List<Venta> ventas = ventaRepository.findByFechaHoraBetween(

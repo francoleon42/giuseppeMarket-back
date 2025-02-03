@@ -30,4 +30,8 @@ public class ItemController {
         return ResponseEntity.ok(itemService.remove(idItem));
     }
 
+    @GetMapping("/vencido_hoy")
+    public ResponseEntity<?> vencidoHoy() {
+        return ResponseEntity.ok(itemService.vencidosHoy());
+    }
 }

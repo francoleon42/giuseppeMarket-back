@@ -151,14 +151,21 @@ public class Bootstrap implements ApplicationRunner {
         // Crear 5 items para cada producto
         for (Producto producto : List.of(producto1, producto2, producto3)) {
             for (int i = 1; i <= 5; i++) {
+                LocalDate fechaVencimiento;
+                if (i == 1) {
+                    fechaVencimiento = LocalDate.now().minusDays(1); // Ayer
+                } else {
+                    fechaVencimiento = LocalDate.now().plusMonths(6 + i);
+                }
                 itemRepository.save(Item.builder()
-                        .vencimiento(LocalDate.now().plusMonths(6 + i))
+                        .vencimiento(fechaVencimiento)
                         .elaboracion(LocalDate.now().minusDays(10 * i))
                         .numeroLote(1000 + (producto.getNombre().hashCode() % 100) + i)
                         .producto(producto)
                         .build());
             }
         }
+
 
 
         // ABRIR CAJA

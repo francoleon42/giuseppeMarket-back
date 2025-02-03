@@ -16,5 +16,7 @@ public interface IItemService {
     String remove(Integer idItem);
 
     List<ItemViewResponseDTO> vencidosHoy();
+    List<ItemViewResponseDTO> buscarPorLote(Integer numeroLote);
+    List<Integer> obtenerAllNumerosLotes();
 
 }

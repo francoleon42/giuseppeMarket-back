@@ -26,4 +26,10 @@ public interface IItemRepository extends JpaRepository<Item, Integer> {
 
     List<Item> findByVencimientoLessThanEqual(LocalDate fecha);
 
+
+    List<Item> findByNumeroLote(Integer numeroLote);
+
+
+    @Query("SELECT DISTINCT i.numeroLote FROM Item i")
+    List<Integer> findDistinctNumeroLote();
 }

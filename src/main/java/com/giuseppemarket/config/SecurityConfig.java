@@ -93,9 +93,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/item/ver_disponibles_de_producto/{idProducto}").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.DELETE, "/item/remove/{idItem}").hasRole(VENDEDOR)
 
-                //
+                //control
                 .requestMatchers(HttpMethod.GET, "/productos/deficit_stock").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/item/vencido_hoy").hasAnyRole(VENDEDOR,ADMINISTRADOR)
+                .requestMatchers(HttpMethod.GET, "/item/ver_por_lote/{numeroLote}").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.GET, "/item/obtener_all_lotes").hasRole(VENDEDOR)
+
+
                 // amb y asignacion e desasignacion de  impuestos
                 .requestMatchers(HttpMethod.POST, "/impuesto/crear").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.DELETE, "/impuesto/remove/{idImpuesto}").hasRole(VENDEDOR)

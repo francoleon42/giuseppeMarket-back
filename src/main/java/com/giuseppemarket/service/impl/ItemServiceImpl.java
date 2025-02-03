@@ -41,7 +41,6 @@ public class ItemServiceImpl implements IItemService {
                 .findById(itemCrearRequestDTO.getIdProducto())
                 .orElseThrow(() -> new NotFoundException("No se encontro el producto con el id: " + itemCrearRequestDTO.getIdProducto()));
 
-
         Item itemNew = Item.builder()
                 .vencimiento(itemCrearRequestDTO.getVencimiento())
                 .elaboracion(itemCrearRequestDTO.getElaboracion())
@@ -78,6 +77,18 @@ public class ItemServiceImpl implements IItemService {
                 .map(this::convertAITemViewResponseDTO)
                 .toList();
 
+    }
+
+    @Override
+    public List<ItemViewResponseDTO> buscarPorLote(Integer numeroLote) {
+        return itemRepository.findByNumeroLote(numeroLote).stream()
+                .map(this::convertAITemViewResponseDTO)
+                .toList();
+    }
+
+    @Override
+    public List<Integer> obtenerAllNumerosLotes() {
+        return itemRepository.findDistinctNumeroLote();
     }
 
 

@@ -34,4 +34,13 @@ public class ItemController {
     public ResponseEntity<?> vencidoHoy() {
         return ResponseEntity.ok(itemService.vencidosHoy());
     }
+    @GetMapping("/ver_por_lote/{numeroLote}")
+    public ResponseEntity<?> verPorLote(@PathVariable("numeroLote") Integer numeroLote) {
+        return ResponseEntity.ok(itemService.buscarPorLote(numeroLote));
+    }
+    @GetMapping("/obtener_all_lotes")
+    public ResponseEntity<?> obtenerAllLotes() {
+        return ResponseEntity.ok(itemService.obtenerAllNumerosLotes());
+    }
+
 }

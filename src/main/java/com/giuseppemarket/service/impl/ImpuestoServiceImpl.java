@@ -10,6 +10,7 @@ import com.giuseppemarket.repository.IImpuestoRepository;
 import com.giuseppemarket.repository.IProductoImpuestoRepository;
 import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IImpuestoService;
+import com.giuseppemarket.service.IProductoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ public class ImpuestoServiceImpl implements IImpuestoService {
     private final IImpuestoRepository impuestoRepository;
     private final IProductoRepository productoRepository;
     private final IProductoImpuestoRepository productoImpuestoRepository;
+    private final IProductoService productoService;
+
 
     @Override
     public ImpuestoResponseDTO crear(ImpuestoRequestDTO impuestoRequestDTO) {
@@ -74,8 +77,11 @@ public class ImpuestoServiceImpl implements IImpuestoService {
                 .impuesto(impuesto)
                 .producto(producto)
                 .build();
+
+        productoService.addImpuesto(producto.getId(),impuesto.getValor());
         productoImpuestoRepository.save(asignacion);
         return ImpuestoAsignacionResponseDTO.builder()
+                .idAsignacion(asignacion.getId())
                 .impuesto(ImpuestoResponseDTO.builder().id(impuesto.getId()).valor(impuesto.getValor()).nombre(impuesto.getNombre()).build())
                 .producto(ProductoBasicResponseDTO.builder()
                         .id(producto.getId())
@@ -87,6 +93,24 @@ public class ImpuestoServiceImpl implements IImpuestoService {
                         .build())
                 .build();
     }
+
+    @Override
+    public String desasignar(ImpuestoDesasignacionRequestDTO impuestoDesasignacionRequestDTO) {
+        Producto producto = productoRepository
+                .findById(impuestoDesasignacionRequestDTO.getIdProducto())
+                .orElseThrow(() -> new NotFoundException("No se encontro el producto con el id: " +impuestoDesasignacionRequestDTO.getIdProducto()));
+        Impuesto impuesto = impuestoRepository
+                .findById(impuestoDesasignacionRequestDTO.getIdImpuesto())
+                .orElseThrow(() -> new NotFoundException("No se encontro el impuesto con el id: " +impuestoDesasignacionRequestDTO.getIdImpuesto()));
+
+        ProductoImpuesto productoImpuesto = productoImpuestoRepository.findByProductoIdAndImpuestoId(producto.getId(),impuesto.getId());
+
+        productoService.removeImpuesto(producto.getId(),impuesto.getValor());
+        productoImpuestoRepository.delete(productoImpuesto);
+
+        return "impuesto desasignado";
+    }
+
 
     @Override
     public List<ImpuestoResponseDTO> obtenerAllAsignacionesDeProducto(Integer idProducto) {

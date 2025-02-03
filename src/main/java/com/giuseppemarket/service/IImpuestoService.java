@@ -1,9 +1,6 @@
 package com.giuseppemarket.service;
 
-import com.giuseppemarket.dto.impuesto.ImpuestoAsignacionRequestDTO;
-import com.giuseppemarket.dto.impuesto.ImpuestoAsignacionResponseDTO;
-import com.giuseppemarket.dto.impuesto.ImpuestoRequestDTO;
-import com.giuseppemarket.dto.impuesto.ImpuestoResponseDTO;
+import com.giuseppemarket.dto.impuesto.*;
 
 import java.util.List;
 
@@ -14,6 +11,7 @@ public interface IImpuestoService {
     String remove(Integer id);
 
     ImpuestoAsignacionResponseDTO asignar(ImpuestoAsignacionRequestDTO impuestoAsignacionRequestDTO);
+    String desasignar(ImpuestoDesasignacionRequestDTO ipuestoDesasignacionRequestDTO) ;
 
     List<ImpuestoResponseDTO> obtenerAllAsignacionesDeProducto(Integer idProducto);
 }

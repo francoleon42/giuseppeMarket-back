@@ -29,8 +29,7 @@ public class ItemServiceImpl implements IItemService {
 
     @Override
     public Item venderItem(Integer idProduc) {
-        //TODO : REVISAR SI SE QUIERE VENDER PRODUCTOS VENCIDOS
-        Item itemMasViejoSinVender = itemRepository.findItemMasViejoSinVender(idProduc);
+        Item itemMasViejoSinVender = itemRepository.findItemMasCercanoSinVencer(idProduc,LocalDate.now());
         itemMasViejoSinVender.setFechaVenta(LocalDate.now());
         itemRepository.save(itemMasViejoSinVender);
         return itemMasViejoSinVender;
@@ -52,6 +51,7 @@ public class ItemServiceImpl implements IItemService {
 
         itemRepository.save(itemNew);
         producto.getItems().add(itemNew);
+        producto.setStockActual(producto.getStockActual() + 1);
         productoRepository.save(producto);
 
         return "SE CREO EL ITEM:" + itemNew.getId();

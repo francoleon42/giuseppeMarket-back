@@ -3,7 +3,9 @@ package com.giuseppemarket.service.impl;
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.dto.venta.*;
 import com.giuseppemarket.model.Item;
+import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.model.Venta;
+import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.repository.IVentaRepository;
 import com.giuseppemarket.service.ICajaService;
 import com.giuseppemarket.service.IItemService;
@@ -12,7 +14,9 @@ import com.giuseppemarket.service.IVentaService;
 import com.giuseppemarket.utils.enums.CondicionVenta;
 import com.giuseppemarket.utils.enums.Estado;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.*;
@@ -24,8 +28,19 @@ public class VentaServiceImpl implements IVentaService {
     private final IVentaRepository ventaRepository;
     private final ICajaService cajaService;
     private final IItemService itemService;
+    private final IProductoRepository productoRepository;
 
-
+private void validarStockDisponible(List<Integer> idsProductos){
+    // 1️⃣ PRIMERA PASADA: Validar stock de todos los productos antes de modificar
+    for (Integer idProducto : idsProductos) {
+        int cantidadSolicitada = Collections.frequency(idsProductos, idProducto);
+        Producto producto = productoRepository.findById(idProducto).orElseThrow();
+        if (producto.getStockActual() <= cantidadSolicitada) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "No hay stock suficiente para el producto: " + producto.getNombre());
+        }
+    }
+}
     @Override
     public VentaResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO, Integer idUsuario) {
         //crear venta
@@ -37,13 +52,15 @@ public class VentaServiceImpl implements IVentaService {
                 .items(new ArrayList<>())
                 .build();
         ventaRepository.save(venta);
-        //afecta a stock y obtiene subtotal y agrega los items de la venta
+
+
+        validarStockDisponible(ventaCreateRequestDTO.getIdproductos());
         for (Integer idProducto : ventaCreateRequestDTO.getIdproductos()) {
-            //TODO : REFACTORIZAR ESTO
             Item item = productoService.disminuirStock(idProducto);
             item.setVenta(venta);
             venta.getItems().add(item);
         }
+
 
         double subtotal = productoService.subtotalDeProductos(ventaCreateRequestDTO.getIdproductos());
         double total = subtotal - ((subtotal * ventaCreateRequestDTO.getDescuento()) / 100);
@@ -163,6 +180,7 @@ public class VentaServiceImpl implements IVentaService {
         }
         return new ArrayList<>(productosVendidosMap.values());
     }
+
     private VentaResponseDTO convertirAVentaResponseDTO(Venta venta) {
         return VentaResponseDTO.builder().build();
     }

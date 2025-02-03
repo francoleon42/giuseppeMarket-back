@@ -11,8 +11,16 @@ import java.util.List;
 
 public interface IItemRepository extends JpaRepository<Item, Integer> {
 
-    @Query("SELECT i FROM Item i WHERE i.producto.id = :idProducto AND i.fechaVenta IS NULL ORDER BY i.elaboracion ASC LIMIT 1")
-    Item findItemMasViejoSinVender(@Param("idProducto") Integer idProducto);
+    @Query("""
+    SELECT i FROM Item i
+    WHERE i.producto.id = :idProducto 
+    AND i.fechaVenta IS NULL
+    AND (i.vencimiento IS NULL OR i.vencimiento >= :fechaActual)
+    ORDER BY i.vencimiento ASC NULLS FIRST
+    LIMIT 1
+""")
+    Item findItemMasCercanoSinVencer(@Param("idProducto") Integer idProducto, @Param("fechaActual") LocalDate fechaActual);
+
 
     List<Item> findByProductoIdAndFechaVentaIsNull(Integer idProducto);
 

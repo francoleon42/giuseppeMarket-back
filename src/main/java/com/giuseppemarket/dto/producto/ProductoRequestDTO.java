@@ -21,7 +21,6 @@ public class ProductoRequestDTO {
     double porcentajeGanancia;
     double descuento;
     String codigoBarras;
-    Integer stockActual;
     Integer stockMinimo;
     Integer stockMaximo;
     String categoria;
@@ -31,4 +30,5 @@ public class ProductoRequestDTO {
     Estado estado;
     Sucursal sucursal;
     CondicionProducto condicionProducto;
+
 }

@@ -96,14 +96,13 @@ public class SecurityConfig {
                 //
                 .requestMatchers(HttpMethod.GET, "/productos/deficit_stock").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/item/vencido_hoy").hasAnyRole(VENDEDOR,ADMINISTRADOR)
-                // amb y asignacion impuestos
+                // amb y asignacion e desasignacion de  impuestos
                 .requestMatchers(HttpMethod.POST, "/impuesto/crear").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.DELETE, "/impuesto/remove/{idImpuesto}").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.POST, "/impuesto/asignar").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.DELETE, "/impuesto/desasignar").hasRole(VENDEDOR)
                 .requestMatchers(HttpMethod.GET, "/impuesto/impuestos_de_producto/{idProducto}").hasRole(VENDEDOR)
-
                 //
-
 
                 // pree venta epic 1
                 .requestMatchers(HttpMethod.GET, "/productos/sucursal").hasRole(VENDEDOR)

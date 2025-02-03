@@ -87,7 +87,7 @@ public class Producto {
     @Column(name = "condicion_producto", nullable = false)
     private CondicionProducto condicionProducto;
 
-    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<Item> items;
 
 }

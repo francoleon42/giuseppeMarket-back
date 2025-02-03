@@ -1,7 +1,6 @@
 package com.giuseppemarket.dto.impuesto;
 
 
-import com.giuseppemarket.dto.producto.ProductoBasicResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImpuestoAsignacionResponseDTO {
-
-    Integer idAsignacion;
-    ImpuestoResponseDTO impuesto;
-    ProductoBasicResponseDTO producto;
+public class ImpuestoDesasignacionRequestDTO {
+    Integer idProducto;
+    Integer idImpuesto;
 }

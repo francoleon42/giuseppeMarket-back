@@ -1,10 +1,12 @@
 package com.giuseppemarket.service.impl;
 
+import com.giuseppemarket.dto.producto.ProductoBasicResponseDTO;
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Producto;
+import com.giuseppemarket.model.ProductoImpuesto;
 import com.giuseppemarket.model.Venta;
 import com.giuseppemarket.repository.IProductoRepository;
 import com.giuseppemarket.service.IItemService;
@@ -34,7 +36,7 @@ public class ProductoServiceImpl implements IProductoService {
             Item item = itemService.venderItem(producto.getId());
             productoRepository.save(producto);
             return item;
-        }else {
+        } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock insuficiente para realizar la venta");
         }
 
@@ -81,16 +83,15 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
-    public String crear(ProductoRequestDTO productoRequestDTO) {
+    public ProductoBasicResponseDTO crear(ProductoRequestDTO productoRequestDTO) {
 
-        //TODO : aplicar impuestos
         double costo = productoRequestDTO.getCosto();
         double porcentajeGan = productoRequestDTO.getPorcentajeGanancia();
 
         double precio = costo + ((costo * porcentajeGan) / 100);
         double precioConDescuento = precio - ((precio * productoRequestDTO.getDescuento()) / 100);
         double ganancia = precioConDescuento - costo;
-        Producto productoNew = Producto.builder()
+        Producto productoNow = Producto.builder()
                 .nombre(productoRequestDTO.getNombre())
                 .marca(productoRequestDTO.getMarca())
                 .descripcion(productoRequestDTO.getDescripcion())
@@ -98,9 +99,9 @@ public class ProductoServiceImpl implements IProductoService {
                 .porcentajeGanancia(productoRequestDTO.getPorcentajeGanancia())
                 .descuento(productoRequestDTO.getDescuento())
                 .codigoBarras(productoRequestDTO.getCodigoBarras())
-                .stockActual(productoRequestDTO.getStockActual())
                 .stockMinimo(productoRequestDTO.getStockMinimo())
                 .stockMaximo(productoRequestDTO.getStockMaximo())
+                .stockActual(0)
                 .categoria(productoRequestDTO.getCategoria())
                 .fabricante(productoRequestDTO.getFabricante())
                 .proveedor(productoRequestDTO.getProveedor())
@@ -111,10 +112,53 @@ public class ProductoServiceImpl implements IProductoService {
                 .ganancia(ganancia)
                 .build();
 
-        productoRepository.save(productoNew);
+        productoRepository.save(productoNow);
 
-        return "";
+        return ProductoBasicResponseDTO.builder()
+                .id(productoNow.getId())
+                .codigoBarras(productoNow.getCodigoBarras())
+                .categoria(productoNow.getCategoria())
+                .nombre(productoNow.getNombre())
+                .marca(productoNow.getMarca())
+                .proveedor(productoNow.getProveedor())
+                .build();
+
     }
+
+    //TODO: revisar el asignar e designar impuestos.
+    @Override
+    public void addImpuesto(Integer idProducto, double impuesto) {
+
+        Producto producto = obtenerProductoById(idProducto);
+        double costoConImpuesto = producto.getCosto() + ((producto.getCosto()*impuesto)/100) ;
+        double porcentajeGan = producto.getPorcentajeGanancia();
+        double precioConPorcentajeGanancia = costoConImpuesto + ((costoConImpuesto * porcentajeGan) / 100);
+        double precio = precioConPorcentajeGanancia - ((precioConPorcentajeGanancia * producto.getDescuento()) / 100);
+        double ganancia = precio - costoConImpuesto;
+
+        producto.setPrecio(precio);
+        producto.setGanancia(ganancia);
+        productoRepository.save(producto);
+    }
+
+    @Override
+    public void removeImpuesto(Integer idProducto, double impuesto) {
+        Producto producto = obtenerProductoById(idProducto);
+
+        // Invertir el cálculo del costo original antes del impuesto
+        double costoSinImpuesto = producto.getCosto() - ((producto.getCosto()*impuesto)/100) ;
+
+        double porcentajeGan = producto.getPorcentajeGanancia();
+        double precioSinDescuento = costoSinImpuesto + ((costoSinImpuesto * porcentajeGan) / 100);
+        double precio = precioSinDescuento - ((precioSinDescuento * producto.getDescuento()) / 100);
+        double ganancia = precio - costoSinImpuesto;
+
+        producto.setPrecio(precio);
+        producto.setGanancia(ganancia);
+
+        productoRepository.save(producto);
+    }
+
 
     @Override
     public String update(ProductoRequestDTO productoRequestDTO, Integer idProducto) {
@@ -133,7 +177,6 @@ public class ProductoServiceImpl implements IProductoService {
         p.setPorcentajeGanancia(productoRequestDTO.getPorcentajeGanancia());
         p.setDescuento(productoRequestDTO.getDescuento());
         p.setCodigoBarras(productoRequestDTO.getCodigoBarras());
-        p.setStockActual(productoRequestDTO.getStockActual());
         p.setStockMinimo(productoRequestDTO.getStockMinimo());
         p.setStockMaximo(productoRequestDTO.getStockMaximo());
         p.setCategoria(productoRequestDTO.getCategoria());

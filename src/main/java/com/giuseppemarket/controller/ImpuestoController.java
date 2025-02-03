@@ -1,6 +1,7 @@
 package com.giuseppemarket.controller;
 
 import com.giuseppemarket.dto.impuesto.ImpuestoAsignacionRequestDTO;
+import com.giuseppemarket.dto.impuesto.ImpuestoDesasignacionRequestDTO;
 import com.giuseppemarket.dto.impuesto.ImpuestoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.service.IImpuestoService;
@@ -34,6 +35,11 @@ public class ImpuestoController {
     @PostMapping("/asignar")
     public ResponseEntity<?> asignar(@RequestBody ImpuestoAsignacionRequestDTO impuestoAsignacionRequestDTO) {
         return ResponseEntity.ok(impuestoService.asignar(impuestoAsignacionRequestDTO));
+    }
+
+    @DeleteMapping("/desasignar")
+    public ResponseEntity<?> desasignar(@RequestBody ImpuestoDesasignacionRequestDTO impuestoDesasignacionRequestDTO) {
+        return ResponseEntity.ok(impuestoService.desasignar(impuestoDesasignacionRequestDTO));
     }
 
     @GetMapping("/impuestos_de_producto/{idProducto}")

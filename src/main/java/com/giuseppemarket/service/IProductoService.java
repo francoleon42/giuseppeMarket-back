@@ -1,5 +1,6 @@
 package com.giuseppemarket.service;
 
+import com.giuseppemarket.dto.producto.ProductoBasicResponseDTO;
 import com.giuseppemarket.dto.producto.ProductoRequestDTO;
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.model.Item;
@@ -21,7 +22,9 @@ public interface IProductoService {
     List<Estado> obtenerEstados();
     List<Sucursal> obtenerSucursales();
     List<CondicionProducto> obtenerCondicionProducto();
-    String crear(ProductoRequestDTO productoRequestDTO);
+    ProductoBasicResponseDTO crear(ProductoRequestDTO productoRequestDTO);
+    void addImpuesto(Integer idProducto,double impuesto);
+    void removeImpuesto(Integer idProducto,double impuesto);
 
     String update(ProductoRequestDTO productoRequestDTO,Integer idProducto);
 

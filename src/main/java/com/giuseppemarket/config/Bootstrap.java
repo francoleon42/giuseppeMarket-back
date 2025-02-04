@@ -164,17 +164,17 @@ public class Bootstrap implements ApplicationRunner {
 
 
 
-        // ABRIR CAJA
-        Caja caja = Caja.builder()
-                .apertura(Instant.now())
-                .montoInicial(1000.0)
-                .observaciones("Apertura inicial de caja")
-                .usuario(vendedor)
-                .montoReal(null)
-                .build();
-
-
-        cajaRepository.save(caja);
+//        // ABRIR CAJA
+//        Caja caja = Caja.builder()
+//                .apertura(Instant.now())
+//                .montoInicial(1000.0)
+//                .observaciones("Apertura inicial de caja")
+//                .usuario(vendedor)
+//                .montoReal(null)
+//                .build();
+//
+//
+//        cajaRepository.save(caja);
 
     }
 }

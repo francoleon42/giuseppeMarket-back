@@ -17,19 +17,19 @@ public class MontoReal {
     private Integer id;
 
     @Column(name = "monto_total")
-    private Integer montoTotal;
+    private double montoTotal;
 
     @Column(name = "monto_tarjetas")
-    private Integer montoTarjetas;
+    private double montoTarjetas;
 
     @Column(name = "monto_transferencias")
-    private Integer montoTransferencias;
+    private double montoTransferencias;
 
     @Column(name = "monto_efectivo")
-    private Integer montoEfectivo;
+    private double montoEfectivo;
 
     @Column(name = "monot_otros")
-    private Integer montoOtros;
+    private double montoOtros;
 
     @Lob
     @Column(name = "observaciones")

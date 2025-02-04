@@ -2,7 +2,7 @@ package com.giuseppemarket.controller;
 
 import com.giuseppemarket.dto.caja.CajaAperturaRequestDTO;
 import com.giuseppemarket.dto.caja.CajaCerrarRequestDTO;
-import com.giuseppemarket.dto.item.ItemCrearRequestDTO;
+import com.giuseppemarket.dto.caja.CajaPorFechaRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
 import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Usuario;
@@ -33,12 +33,10 @@ public class CajaController {
         return ResponseEntity.ok(cajaService.cerrarCaja(usuario, cajaCerrarRequestDTO));
     }
 
-    //
-//
-//    @GetMapping("/ver_disponibles_de_producto/{idProducto}")
-//    public ResponseEntity<?> obtenerItemsDisponiblesDeProducto(@PathVariable("idProducto") Integer idProducto) {
-//        return ResponseEntity.ok(itemService.obtenerItemsDisponiblesDeProducto(idProducto));
-//    }
+    @GetMapping("/obtener_cajas_por_fechas")
+    public ResponseEntity<?> obtenerCajasPorFechas(@RequestBody CajaPorFechaRequestDTO cajaPorFechaRequestDTO) {
+        return ResponseEntity.ok(cajaService.obtenerCajasPorFechas(cajaPorFechaRequestDTO));
+    }
     private Usuario getUserFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication != null && authentication.isAuthenticated())) {

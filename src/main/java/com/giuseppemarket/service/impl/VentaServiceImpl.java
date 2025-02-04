@@ -2,6 +2,7 @@ package com.giuseppemarket.service.impl;
 
 import com.giuseppemarket.dto.producto.ProductoResponseDTO;
 import com.giuseppemarket.dto.venta.*;
+import com.giuseppemarket.model.Caja;
 import com.giuseppemarket.model.Item;
 import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.model.Venta;
@@ -30,20 +31,29 @@ public class VentaServiceImpl implements IVentaService {
     private final IItemService itemService;
     private final IProductoRepository productoRepository;
 
-private void validarStockDisponible(List<Integer> idsProductos){
-    // 1️⃣ PRIMERA PASADA: Validar stock de todos los productos antes de modificar
-    for (Integer idProducto : idsProductos) {
-        int cantidadSolicitada = Collections.frequency(idsProductos, idProducto);
-        Producto producto = productoRepository.findById(idProducto).orElseThrow();
-        if (producto.getStockActual() <= cantidadSolicitada) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "No hay stock suficiente para el producto: " + producto.getNombre());
+    private void validarStockDisponible(List<Integer> idsProductos) {
+        // 1️⃣ PRIMERA PASADA: Validar stock de todos los productos antes de modificar
+        for (Integer idProducto : idsProductos) {
+            int cantidadSolicitada = Collections.frequency(idsProductos, idProducto);
+            Producto producto = productoRepository.findById(idProducto).orElseThrow();
+            if (producto.getStockActual() <= cantidadSolicitada) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "No hay stock suficiente para el producto: " + producto.getNombre());
+            }
         }
     }
-}
+
+    private void validarSiUsuarioTieneAbiertaCaja(Integer idUsuario) {
+        Caja caja = cajaService.obtenerCajaActualByUser(idUsuario);
+        if (caja == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Para realizar una venta primero debe abrir una caja");
+        }
+    }
+
     @Override
     public VentaResponseDTO realizarVenta(VentaCreateRequestDTO ventaCreateRequestDTO, Integer idUsuario) {
         validarStockDisponible(ventaCreateRequestDTO.getIdproductos());
+        validarSiUsuarioTieneAbiertaCaja(idUsuario);
         //crear venta
         Venta venta = Venta.builder()
                 .fechaHora(Instant.now())
@@ -92,10 +102,11 @@ private void validarStockDisponible(List<Integer> idsProductos){
         List<Venta> ventas = ventaRepository.findByFechaHoraBetween(ventaHistorialRequestDTO.getFechaDesde(), ventaHistorialRequestDTO.getFechaHasta());
         return obtenerHistorialDeVenta(ventas);
     }
+
     @Override
     public List<VentaHistorialResponseDTO> obtenerVentasDeFecha(VentaPorFechaRequestDTO ventaPorFechaRequestDTO) {
         Instant fechaInicio = ventaPorFechaRequestDTO.getFecha().atStartOfDay().toInstant(ZoneOffset.UTC);  // Inicio del día (00:00)
-        Instant fechaFin =  ventaPorFechaRequestDTO.getFecha().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);  // Fin del día (23:59:59)
+        Instant fechaFin = ventaPorFechaRequestDTO.getFecha().plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);  // Fin del día (23:59:59)
         List<Venta> ventas = ventaRepository.findByFechaHoraBetween(fechaInicio, fechaFin);
         return obtenerHistorialDeVenta(ventas);
     }
@@ -147,8 +158,7 @@ private void validarStockDisponible(List<Integer> idsProductos){
     }
 
 
-
-    private List<VentaHistorialResponseDTO> obtenerHistorialDeVenta(List<Venta> ventas){
+    private List<VentaHistorialResponseDTO> obtenerHistorialDeVenta(List<Venta> ventas) {
         List<VentaHistorialResponseDTO> ventaHistorialResponseDTO = new ArrayList<>();
         for (Venta venta : ventas) {
             VentaResponseDTO ventaResponseDTO = VentaResponseDTO.builder().build();
@@ -193,6 +203,7 @@ private void validarStockDisponible(List<Integer> idsProductos){
 
 
     }
+
     private VentaResponseDTO convertirAVentaResponseDTO(Venta venta) {
         return VentaResponseDTO.builder().build();
     }

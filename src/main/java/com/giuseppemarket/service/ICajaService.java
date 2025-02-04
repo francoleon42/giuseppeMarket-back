@@ -4,6 +4,7 @@ import com.giuseppemarket.dto.caja.CajaAperturaRequestDTO;
 import com.giuseppemarket.dto.caja.CajaAperturaResponseDTO;
 import com.giuseppemarket.dto.caja.CajaCerrarRequestDTO;
 import com.giuseppemarket.dto.caja.CajaCerrarResponseDTO;
+import com.giuseppemarket.model.Caja;
 import com.giuseppemarket.model.Usuario;
 
 public interface ICajaService {
@@ -12,4 +13,6 @@ public interface ICajaService {
 
     CajaAperturaResponseDTO aperturaCaja (Usuario usuario , CajaAperturaRequestDTO cajaAperturaRequestDTO);
     CajaCerrarResponseDTO cerrarCaja(Usuario usuario, CajaCerrarRequestDTO cajaCerrarRequestDTO);
+
+    Caja obtenerCajaActualByUser(Integer idUser);
 }

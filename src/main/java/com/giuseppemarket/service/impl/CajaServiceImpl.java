@@ -2,20 +2,13 @@ package com.giuseppemarket.service.impl;
 
 import com.giuseppemarket.dto.caja.*;
 import com.giuseppemarket.dto.login.GetUserDTO;
-import com.giuseppemarket.exception.NotFoundException;
 import com.giuseppemarket.model.Caja;
 import com.giuseppemarket.model.MontoReal;
-import com.giuseppemarket.model.Producto;
 import com.giuseppemarket.model.Usuario;
 import com.giuseppemarket.repository.ICajaRepository;
 import com.giuseppemarket.repository.IMontoRealRepository;
 import com.giuseppemarket.service.ICajaService;
-import com.giuseppemarket.utils.enums.Rol;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,16 +24,21 @@ public class CajaServiceImpl implements ICajaService {
     private final IMontoRealRepository montoRealRepository;
 
     @Override
-    public void incrementarCaja(Integer idUsuario,double montoFinalAgregado) {
+    public void incrementarCaja(Integer idUsuario, double montoFinalAgregado) {
         Caja caja = obtenerCajaActualByUser(idUsuario);
-        caja.setMontoFinal(caja.getMontoFinal() + montoFinalAgregado);
-        cajaRepository.save(caja);
+        if (caja != null) {
+            caja.setMontoFinal(caja.getMontoFinal() + montoFinalAgregado);
+            cajaRepository.save(caja);
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Para realizar una venta primero debe abrir una caja");
+        }
+
     }
 
     @Override
     public CajaAperturaResponseDTO aperturaCaja(Usuario usuario, CajaAperturaRequestDTO cajaAperturaRequestDTO) {
         Caja caja = obtenerCajaActualByUser(usuario.getId());
-        if(caja == null){
+        if (caja == null) {
             Caja newCaja = Caja.builder()
                     .apertura(Instant.now())
                     .montoInicial(cajaAperturaRequestDTO.getMontoInicial())
@@ -59,9 +57,9 @@ public class CajaServiceImpl implements ICajaService {
                             .role(usuario.getRol())
                             .estado(usuario.getEstadoUsuario().toString())
                             .build())
-                .build();
-        }else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "En este momento tiene una caja en apertura: " );
+                    .build();
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "En este momento tiene una caja en apertura: ");
         }
     }
 
@@ -69,37 +67,38 @@ public class CajaServiceImpl implements ICajaService {
     public CajaCerrarResponseDTO cerrarCaja(Usuario usuario, CajaCerrarRequestDTO cajaCerrarRequestDTO) {
         Caja caja = obtenerCajaActualByUser(usuario.getId());
 
-        if(caja != null){
-            MontoReal  montoReal = caja.getMontoReal();
-            double montoTarjetas =cajaCerrarRequestDTO.getMontoRealDTO().getMontoTarjetas() ;
-            double montoTransferencias = cajaCerrarRequestDTO.getMontoRealDTO().getMontoTransferencias() ;
+        if (caja != null) {
+            MontoReal montoReal = caja.getMontoReal();
+            double montoTarjetas = cajaCerrarRequestDTO.getMontoRealDTO().getMontoTarjetas();
+            double montoTransferencias = cajaCerrarRequestDTO.getMontoRealDTO().getMontoTransferencias();
             double montoEfectivo = cajaCerrarRequestDTO.getMontoRealDTO().getMontoEfectivo();
-            double montoOtros = cajaCerrarRequestDTO.getMontoRealDTO().getMontoOtros() ;
+            double montoOtros = cajaCerrarRequestDTO.getMontoRealDTO().getMontoOtros();
             double montoTotal = montoTarjetas + montoTransferencias + montoEfectivo + montoOtros;
             montoReal.setMontoTarjetas(montoTarjetas);
             montoReal.setMontoTransferencias(montoTransferencias);
             montoReal.setMontoEfectivo(montoEfectivo);
             montoReal.setMontoOtros(montoOtros);
-            montoReal.setMontoTotal(montoTotal); ;
+            montoReal.setMontoTotal(montoTotal);
+            ;
             montoRealRepository.save(montoReal);
 
             caja.setCierre(Instant.now());
             caja.setObservaciones(cajaCerrarRequestDTO.getObservacionesCaja());
             cajaRepository.save(caja);
 
-           return  CajaCerrarResponseDTO.builder()
+            return CajaCerrarResponseDTO.builder()
                     .montoFinal(caja.getMontoFinal())
                     .montoReal(montoTotal)
                     .resultado(caja.getMontoFinal() - montoTotal)
                     .estado(caja.getMontoFinal() - montoTotal == 0.00 ? "CONSISTENTE" : "INCONSISTENTE")
                     .build();
-        }else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "En este momento no tines ninguna caja abierta " );
+        } else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "En este momento no tines ninguna caja abierta ");
         }
     }
 
-
-    private Caja obtenerCajaActualByUser(Integer idUser) {
+    @Override
+    public Caja obtenerCajaActualByUser(Integer idUser) {
         return cajaRepository.findByUsuarioIdAndCierreIsNull(idUser)
                 .orElse(null);
     }

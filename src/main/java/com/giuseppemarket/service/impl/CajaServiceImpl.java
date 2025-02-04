@@ -87,7 +87,7 @@ public class CajaServiceImpl implements ICajaService {
             caja.setObservaciones(cajaCerrarRequestDTO.getObservacionesCaja());
             cajaRepository.save(caja);
 
-            CajaCerrarResponseDTO.builder()
+           return  CajaCerrarResponseDTO.builder()
                     .montoFinal(caja.getMontoFinal())
                     .montoReal(montoTotal)
                     .resultado(caja.getMontoFinal() - montoTotal)
@@ -96,7 +96,6 @@ public class CajaServiceImpl implements ICajaService {
         }else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "En este momento no tines ninguna caja abierta " );
         }
-
     }
 
 

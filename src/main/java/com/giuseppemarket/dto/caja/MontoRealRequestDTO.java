@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MontoRealRequestDTO {
-    double montoTotal;
     double montoTarjetas;
     double montoTransferencias;
     double montoEfectivo;

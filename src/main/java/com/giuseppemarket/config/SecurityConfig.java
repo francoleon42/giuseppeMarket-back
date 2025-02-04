@@ -125,7 +125,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/venta/ver_ventas_de_fecha").hasRole(VENDEDOR)
 
                 // Epic Caja
-                .requestMatchers(HttpMethod.POST, "/caja/apertura").hasRole(VENDEDOR);
+                .requestMatchers(HttpMethod.POST, "/caja/apertura").hasRole(VENDEDOR)
+                .requestMatchers(HttpMethod.PATCH, "/caja/cierre").hasRole(VENDEDOR);
 
     }
 

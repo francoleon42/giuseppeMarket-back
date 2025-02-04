@@ -1,6 +1,7 @@
 package com.giuseppemarket.controller;
 
 import com.giuseppemarket.dto.caja.CajaAperturaRequestDTO;
+import com.giuseppemarket.dto.caja.CajaCerrarRequestDTO;
 import com.giuseppemarket.dto.item.ItemCrearRequestDTO;
 import com.giuseppemarket.exception.BadRoleException;
 import com.giuseppemarket.exception.NotFoundException;
@@ -27,9 +28,9 @@ public class CajaController {
     }
 
     @PatchMapping("/cierre")
-    public ResponseEntity<?> cierre(@RequestBody CajaAperturaRequestDTO cajaAperturaRequestDTO) {
+    public ResponseEntity<?> cierre(@RequestBody CajaCerrarRequestDTO cajaCerrarRequestDTO) {
         Usuario usuario = getUserFromToken();
-        return ResponseEntity.ok(cajaService.aperturaCaja(usuario, cajaAperturaRequestDTO));
+        return ResponseEntity.ok(cajaService.cerrarCaja(usuario, cajaCerrarRequestDTO));
     }
 
     //
